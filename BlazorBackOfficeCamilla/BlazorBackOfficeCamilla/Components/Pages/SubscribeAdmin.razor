@@ -1,0 +1,65 @@
+﻿@page "/subscribeadmin"
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+<h3>SubscribeAdmin</h3>
+       @if (!string.IsNullOrWhiteSpace(statusMessage))
+{
+    <p>@statusMessage</p>
+}
+<section class="subscribers">
+    <div class="container">
+        @if (subscribers == null)
+        {
+            <div><i class="fa-sharp fa-solid fa-spinner-third fa-spin"></i></div>
+        }
+        else
+        {
+
+            <h2>Subscribers</h2>
+            @foreach (var subscriber in subscribers)
+            {
+                var link = $"/update-subscriber/{subscriber.Email}";
+                <div class="subscriber">
+                    <h2 class="course-title">@subscriber.Email</h2>
+                <hr />
+                    <a href="@link"><button class="btn btn-theme">Update</button></a>
+                    <button class="btn btn-red" @onclick="() => DeleteSubscriber(subscriber.Email)">Delete</button>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+@code {
+    [SupplyParameterFromQuery]
+    private string statusMessage { get; set; } = "";
+    private List<subscribersmodel> subscribers;
+
+    public class subscribersmodel
+    {
+        public string Email { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var getSubscribers = await Http.GetFromJsonAsync<List<subscribersmodel>>("https://newsletterprovider-silicon-camilla.azurewebsites.net/api/GetSubscribers?code=csLVO2P43-Grw7wsMj2BSb7_sHOLjQrokvx6dgVNhzBuAzFu0WM8wg%3D%3D");
+        if (getSubscribers != null)
+            subscribers = getSubscribers;
+
+    }
+    private async Task DeleteSubscriber(string email)
+    {
+        var response = await Http.PostAsJsonAsync($"https://newsletterprovider-silicon-camilla.azurewebsites.net/api/DeleteSubscriber?code=Plgfty5JMj22i2MqsP5lqnt2vZ6G_IqIgIQu2t3HdaOkAzFuHX7ZBg%3D%3D", new { Email = email });
+        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            statusMessage = "Subscriber deleted successfully";
+            StateHasChanged();
+        }
+        else
+        {
+            statusMessage = "Failed to delete subscriber";
+        }
+    }
+}

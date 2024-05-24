@@ -236,6 +236,26 @@ public class CourseService(GraphQLHttpClient client)
         }
         return response.Data.UpdateCourse;
     }
+    public async Task<bool> RequestDeleteCourseAsync(string id)
+    {
+        var request = new GraphQLRequest
+        {
+            Query = @"
+            mutation ($id: String!) {
+                deleteCourse(id: $id)
+            }",
+            Variables = new { id }
+        };
+
+        var response = await _client.SendMutationAsync<DeleteCourseResponse>(request);
+        if (response.Errors != null && response.Errors.Any())
+        {
+            // Hantera eventuella fel
+            return false;
+        }
+
+        return response.Data.DeleteCourse;
+    }
 
     private class CourseResponse
     {
@@ -243,5 +263,9 @@ public class CourseService(GraphQLHttpClient client)
         public Course UpdateCourse { get; set; }
         public CourseCreate CreateCourse { get; set; }
         public List<CourseAdminCard> GetCoursesAdmin { get; set; }
+    }
+    private class DeleteCourseResponse
+    {
+        public bool DeleteCourse { get; set; }
     }
 }

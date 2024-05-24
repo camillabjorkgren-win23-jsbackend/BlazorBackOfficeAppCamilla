@@ -1,15 +1,20 @@
 ﻿@page "/courseadmin"
 @attribute [StreamRendering]
+@rendermode InteractiveServer
+
 @inject CourseService CourseService
+@inject NavigationManager NavigationManager
 
 
 <h3>CourseAdmin</h3>
 
 <section class="admincourse">
     <div class="container">
-<NavLink class="nav-link" href="create-course">
-    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Create Course
-</NavLink>
+<a href="create-course" class="btn btn-theme mb-5" aria-hidden="true"><h5>Create new Course</h5></a>
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <p>@statusMessage</p>
+        }
  @if (courses == null)
 {
     <div><i class="fa-sharp fa-solid fa-spinner-third fa-spin"></i></div>
@@ -38,7 +43,7 @@ else
 
                 <div class="course-footer">
                         <a href="@link"><button class="btn btn-theme">Update</button></a>
-                    <button class="btn btn-red">Delete</button>
+                        <button class="btn btn-red" @onclick="() => DeleteCourse(course.Id)">Delete</button>
                 </div>
             </div>
         <hr />
@@ -55,12 +60,13 @@ else
 @*Get på alla kurser här, typ bara display en titel och pris? *@
 
 @code {
+    [SupplyParameterFromQuery]
+    private string statusMessage { get; set; } = "";
+
     private List<CourseAdminCard>? courses;
 
     protected override async Task OnInitializedAsync()
     {
-
-
         // courses = await CourseService.RequestCourseCardAdmin();
         var query = new GraphQLQuery
             {
@@ -108,5 +114,15 @@ else
                 }).ToList();
             }
         }
+    }
+
+
+    private async Task DeleteCourse(string id)
+    {
+
+        var result = await CourseService.RequestDeleteCourseAsync(id);
+        if (result)
+        statusMessage = "Course deleted successfully";
+            StateHasChanged();
     }
 }

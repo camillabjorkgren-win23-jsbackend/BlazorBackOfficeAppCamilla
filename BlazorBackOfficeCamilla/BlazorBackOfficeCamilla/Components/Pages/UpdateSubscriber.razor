@@ -1,0 +1,148 @@
+﻿@page "/update-subscriber/{email}"
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager NavigationManager
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+<h3>UpdateSubscriber</h3>
+@if (!string.IsNullOrWhiteSpace(StatusMessage))
+{
+    <p>@StatusMessage</p>
+}
+<section class="newsletter" id="newsletter">
+    <div class="container">
+        <div class="title">
+            <div class="arrows"><img src="/images/arrows.svg" alt="arrows"></div>
+        </div>
+        <EditForm method="post" FormName="subscribeform" Model="SubscribeForm" OnValidSubmit="OnValidSubmit" novalidate>
+            <DataAnnotationsValidator />
+            <div class="sign-up-checkbox">
+                <h6>Sign up for Newsletters</h6>
+                <div class="grid">
+                    <div class="checkbox">
+                        <InputCheckbox @bind-Value="SubscribeForm.DailyNewsletter" />
+                        <label>Daily Newsletter</label>
+                    </div>
+                    <div class="checkbox">
+                        <InputCheckbox @bind-Value="SubscribeForm.AdvertisingUpdates" />
+                        <label>Advertising updates</label>
+                    </div>
+                    <div class="checkbox">
+                        <InputCheckbox @bind-Value="SubscribeForm.WeekInReview" />
+                        <label>Week in Review</label>
+                    </div>
+                    <div class="checkbox">
+                        <InputCheckbox @bind-Value="SubscribeForm.EventUpdates" />
+                        <label>Event Updates</label>
+                    </div>
+                    <div class="checkbox">
+                        <InputCheckbox @bind-Value="SubscribeForm.StartupsWeekly" />
+                        <label>Startups Weekly</label>
+                    </div>
+                    <div class="checkbox">
+                        <InputCheckbox @bind-Value="SubscribeForm.Podcasts" />
+                        <label>Podcasts</label>
+                    </div>
+                </div>
+            </div>
+            <div class="sign-up">
+                <InputText type="email" placeholder="Enter your email" @bind-Value="SubscribeForm.Email" />
+
+                <button class="btn-theme" type="submit">
+                    Subscribe*
+                </button>
+            </div>
+
+            <span class="information">
+                <ValidationMessage For="@(() => SubscribeForm.Email)" class="alert-danger-pop" />
+                <span class="terms">@StatusMessage</span>
+            </span>
+        </EditForm>
+
+
+    </div>
+</section>
+@code {
+    [Parameter]
+    public string Email { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string StatusMessage { get; set; } = null!;
+
+    [SupplyParameterFromForm]
+    public SubscribeFormModel SubscribeForm { get; set; } = new SubscribeFormModel();
+
+
+    private async Task OnValidSubmit()
+    {
+        try
+        {
+            var result = await Http.PostAsJsonAsync("https://newsletterprovider-silicon-camilla.azurewebsites.net/api/UpdateSubscriber?code=dOTwTpyNqlO0o5TXwiFPyr45QoQ7SQuAf17ySe-uzVthAzFunyCOQg%3D%3D", SubscribeForm);
+            if (result.IsSuccessStatusCode)
+                StatusMessage = "Subscriber was updated!";
+            else
+            {
+                StatusMessage = "Unable to update the subscription right now. Please try again later.";
+            }
+        }
+        catch
+        {
+            StatusMessage = "Unable to update the subscription right now. Please try again later.";
+        }
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        Email = uri.Segments.LastOrDefault();
+
+        await GetSubscriber(Email);
+        
+    }
+    private async Task GetSubscriber(string email)
+    {
+        var subscriberRequest = new { Email = email };
+        var response = await Http.PostAsJsonAsync("https://newsletterprovider-silicon-camilla.azurewebsites.net/api/GetOneSubscriber?code=qMVaRYt6m4sru1zUHg628GkSapuY8A2Bh0wYS0Yry0qSAzFu1bSBMw%3D%3D", subscriberRequest);
+        if (response.IsSuccessStatusCode)
+        {
+            var subscriber = await response.Content.ReadFromJsonAsync<SubscribeFormModel>();
+            if (subscriber != null)
+            {
+                SubscribeForm = subscriber;
+            }
+        }
+    }
+
+
+
+    public class SubscribeFormModel
+    {
+
+        [Required(ErrorMessage = "You must enter a valid email.")]
+        [Display(Name = "Subscribe", Prompt = "Enter your email address")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; } = null!;
+
+        [Display(Name = "Advertising Updates")]
+        public bool AdvertisingUpdates { get; set; } = false;
+
+        [Display(Name = "Week in Review")]
+        public bool WeekInReview { get; set; } = false;
+
+        [Display(Name = "Podcasts")]
+        public bool Podcasts { get; set; } = false;
+
+        [Display(Name = "Startups Weekly")]
+        public bool StartupsWeekly { get; set; } = false;
+
+        [Display(Name = "Daily Newsletter")]
+        public bool DailyNewsletter { get; set; } = false;
+
+        [Display(Name = "Event Updates")]
+        public bool EventUpdates { get; set; } = false;
+
+        public bool IsSubscribed { get; set; } = false;
+    }
+}

@@ -163,8 +163,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-     
-
         course = await CourseService.GetCourseByIdAsync(courseId);
         if (course != null && course.Content != null)
         {
