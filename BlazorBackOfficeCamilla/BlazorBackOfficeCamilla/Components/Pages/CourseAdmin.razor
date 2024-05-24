@@ -1,0 +1,112 @@
+﻿@page "/courseadmin"
+@attribute [StreamRendering]
+@inject CourseService CourseService
+
+
+<h3>CourseAdmin</h3>
+
+<section class="admincourse">
+    <div class="container">
+<NavLink class="nav-link" href="create-course">
+    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Create Course
+</NavLink>
+ @if (courses == null)
+{
+    <div><i class="fa-sharp fa-solid fa-spinner-third fa-spin"></i></div>
+}
+else
+{
+    @foreach (var course in courses)
+    {
+        var link = $"/update-course/{course.Id}";
+        <div> <img class="course-image" src="@course.ImageUri" /></div>
+
+            <div class="info">
+                <h2 class="course-title">@course.Title</h2>
+                <p class="course-creator">by @course.Author</p>
+                <div class="course-prices">
+                    @if (course.DiscountPrice > 0)
+                    {
+                        <div class="discount-price">$@course.DiscountPrice</div>
+                        <div class="original-price discount">$@course.Price</div>
+                    }
+                    else
+                    {
+                        <div class="original-price">$@course.Price</div>
+                    }
+                </div>
+
+                <div class="course-footer">
+                        <a href="@link"><button class="btn btn-theme">Update</button></a>
+                    <button class="btn btn-red">Delete</button>
+                </div>
+            </div>
+        <hr />
+    }
+}
+    </div>
+</section>
+
+
+
+@* https://youtu.be/x1Nd1rR0CEQ?t=13810 *@
+
+
+@*Get på alla kurser här, typ bara display en titel och pris? *@
+
+@code {
+    private List<CourseAdminCard>? courses;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        // courses = await CourseService.RequestCourseCardAdmin();
+        var query = new GraphQLQuery
+            {
+                Query = "{getCourses {id imageUri title authors{name} prices {price discount}}}"
+            };
+
+        var response = await Http.PostAsJsonAsync("https://courseprovider-silicon-camilla.azurewebsites.net/api/graphql?code=LL18Cb5IbCut7M9hw0bCm5RFI7hOjOJwHOmU6-Dyd1TXAzFuSGQ4FA%3D%3D", query);
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<DynamicGraphQLResponse>();
+            if (result?.Data.TryGetProperty("getCourses", out var coursesElement) == true)
+            {
+                courses = coursesElement.EnumerateArray().Select(course =>
+                {
+                    var courseModel = new CourseAdminCard();
+
+                    if (course.TryGetProperty("id", out var idElement))
+                    {
+                        courseModel.Id = idElement.GetString();
+                    }
+                    if (course.TryGetProperty("title", out var titleElement))
+                    {
+                        courseModel.Title = titleElement.GetString();
+                    }
+                    if (course.TryGetProperty("authors", out var authorsElement) && authorsElement.GetArrayLength() > 0)
+                    {
+                        courseModel.Author = authorsElement[0].GetProperty("name").GetString();
+                    }
+                    if (course.TryGetProperty("prices", out var pricesElement))
+                    {
+                        if (pricesElement.TryGetProperty("price", out var priceElement))
+                        {
+                            courseModel.Price = priceElement.GetDecimal();
+                        }
+                        if (pricesElement.TryGetProperty("discount", out var discountElement))
+                        {
+                            courseModel.DiscountPrice = discountElement.GetDecimal();
+                        }
+                    }
+                    if (course.TryGetProperty("imageUri", out var imageUriElement))
+                    {
+                        courseModel.ImageUri = imageUriElement.GetString();
+                    }
+                    return courseModel;
+                }).ToList();
+            }
+        }
+    }
+}

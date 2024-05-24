@@ -1,0 +1,179 @@
+﻿.admincourse {
+    height: 100%;
+    padding: 50px;
+
+    .container {
+        margin: 0 auto;
+        height: 100%;
+
+        .courseform {
+            width: 90%;
+            margin: 0 auto;
+
+            h2 {
+                text-align: center;
+            }
+
+            .mb-3 {
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .untouched {
+                background: var(--color-gray-300);
+            }
+
+            .select-form {
+                margin: 0 auto;
+                text-align: center;
+                width: 80%;
+                margin-bottom: 1rem;
+                border: 1px solid var(--color-gray-300);
+            }
+
+            .form-select {
+                margin: 0 auto;
+                text-align: center;
+                width: 80%;
+                margin-bottom: 1rem;
+                border: 1px solid var(--color-gray-300);
+            }
+
+            .checkbox-group {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: baseline;
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .checkbox {
+                display: flex;
+                width: 180px;
+                gap: 1rem;
+
+                input {
+                    width: 20px;
+                    height: 20px;
+                    padding: 0;
+                    margin: 0;
+                }
+
+                label {
+                    margin: 0;
+                }
+            }
+
+            a {
+                display: block;
+                width: fit-content;
+                margin: 0 auto;
+
+                button {
+                    margin-top: 2rem;
+                }
+            }
+        }
+    }
+}
+form {
+
+    .form-check {
+        align-items: center;
+        justify-content: center;
+
+        #RememberMe {
+            margin-right: 15px;
+        }
+    }
+
+    input {
+        padding: 1rem;
+        border-radius: 8px !important;
+        border: 1px solid var(--color-gray-400) !important;
+
+        &.input-validation-error {
+            border: 2px solid var(--color-danger) !important;
+            border-radius: 0.5rem !important;
+            color: var(--color-danger);
+        }
+
+        &::placeholder {
+            color: var(--color-gray-400) !important;
+        }
+    }
+
+    textarea {
+        height: 200px; 
+        resize: vertical; 
+    }
+}
+
+.form {
+    background-color: var(--color-gray-000);
+    border-radius: 6px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    margin-top: 2rem;
+
+
+    .form-control {
+        background: var(--color-gray-050);
+        border: 1px solid var(--color-gray);
+        border-radius: 8px !important;
+        border: 1px solid var(--color-gray-400);
+        color: var(--color-gray-150);
+        padding: 1rem;
+
+        input::placeholder {
+            color: var(--color-gray);
+        }
+
+
+        &.input-validation-error {
+            border: 2px solid $danger !important;
+            border-radius: 0.5rem !important;
+            color: $danger;
+        }
+    }
+
+   
+
+    .form-select {
+        background: var(--color-gray-050);
+        border: 1px solid var(--color-gray);
+        color: var(--color-gray-150);
+    }
+
+    textarea {
+        background: var(--color-gray-050);
+        border: 1px solid var(--color-gray);
+        color: var(--color-gray-150);
+    }
+
+    span {
+        &.field-validation-error {
+            color: $danger;
+        }
+    }
+
+    .form-check-label {
+        margin-left: 0.5rem;
+    }
+
+    .form-check {
+        display: inline-flex;
+        align-items: center;
+        padding: 0;
+
+        #RememberMe {
+            margin: 0;
+        }
+
+        .form-check-input {
+            margin: 0;
+        }
+    }
+}
+

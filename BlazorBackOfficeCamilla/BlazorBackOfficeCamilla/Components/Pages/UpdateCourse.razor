@@ -1,0 +1,207 @@
+﻿@page "/update-course/{courseId}"
+@inject CourseService CourseService
+@inject NavigationManager Navigation
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+<h3>Update Course</h3>
+<section class="admincourse">
+    <div class="container">
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <p>@statusMessage</p>
+        }
+        @if (course != null && course.Authors != null && course.Prices != null && course.Content != null)
+            {
+        <EditForm Model="course" class="courseform form" FormName="updatecourse" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <h2>Update course</h2>
+
+            
+                <div class="mb-3">
+                    <label class="form-label">Title:</label>
+                    <InputText @bind-Value="course.Title" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Image URI:</label>
+                    <InputText @bind-Value="course.ImageUri" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Image Header URI:</label>
+                    <InputText @bind-Value="course.ImageHeaderUri" class="form-control" />
+                </div>
+                <div class="checkbox-group">
+                    <div class="checkbox">
+                        <InputCheckbox @bind-Value="course.IsDigital" type="checkbox" id="checkDigital" class="form-check-input" />
+                        <label class="form-check-label">Is digital</label>
+                    </div>
+                    <div class="checkbox">
+                        <InputCheckbox @bind-Value="course.IsBestseller" type="checkbox" id="checkBest" class="form-check-input" />
+                        <label class="form-check-label">Is bestseller</label>
+                    </div>
+                </div>
+                <div class="select-form">
+                <label class="form-label mt-3">Category</label>
+                <InputSelect @bind-Value="categories" list="browsers" class="form-select" id="floatingSelect" aria-label="Choose category">                   
+                    <option value="categories" selected disabled></option>
+                    <option value="App Development">App Development</option>
+                    <option value="Frontend Development">Frontend Development</option>
+                    <option value="Backend Devlopment">Backend Devlopment</option>
+                </InputSelect>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ingress</label>
+                    <InputTextArea @bind-Value="course.Ingress" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Star Rating</label>
+                    <InputNumber @bind-Value="course.StarRating" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Reviews</label>
+                    <InputText @bind-Value="course.Reviews" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Likes</label>
+                    <InputText @bind-Value="course.Likes" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label"> Likes In Percent</label>
+                    <InputText @bind-Value="course.LikesInProcent" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Hours</label>
+                    <InputText @bind-Value="course.Hours" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Authors</label>
+                    @if (course.Authors != null)
+                    {
+                        @foreach (var author in course.Authors)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <InputText @bind-Value="author.Name" class="form-control" />
+                                <label class="form-label">Author Image</label>
+                                <InputText @bind-Value="author.AuthorImage" class="form-control" />
+                                <button type="button"  class="btn-gray btn mt-2" @onclick="() => RemoveAuthor(author)">Remove</button>
+                            </div>
+                        }
+                        <button class="btn-gray btn" type="button" @onclick="AddAuthor">Add Author</button>
+
+                    }
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Prices</label>
+                    <div class="mb-3">
+                        <label class="form-label">Currency</label>
+                        <InputText @bind-Value="course.Prices.Currency" class="form-control" />
+                        <label class="form-label">Price</label>
+                        <InputNumber @bind-Value="course.Prices.Price" class="form-control" />
+                        <label class="form-label">Discount</label>
+                        <InputNumber @bind-Value="course.Prices.Discount" class="form-control" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Content</label>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <InputTextArea @bind-Value="course.Content.Description" class="form-control" />
+
+                        <label class="form-label">Includes</label>
+                        <InputTextArea @bind-Value="includesText" class="form-control" />
+
+                        <label class="form-label">Program Details</label>
+
+                        @if (course.Content.ProgramDetails != null)
+                        {
+                            @foreach (var detail in course.Content.ProgramDetails)
+                            {
+                                i++;
+                                <div class="mb-3">
+                                    <label class="form-label">[@i] Title</label>
+                                    <InputText @bind-Value="detail.Title" class="form-control" />
+                                    <label class="form-label">Description</label>
+                                    <InputTextArea @bind-Value="detail.Description" class="form-control" />
+                                    <button class="btn-gray btn mt-2" type="button" @onclick="() => RemoveProgramDetail(detail)">Remove</button>
+                                </div>
+                            }
+                        }
+                        <button class="btn-gray btn" type="button" @onclick="AddProgramDetail">Add Program Detail</button>
+                    </div>
+                </div>
+                <InputText @bind-Value="course.Id" type="text" class="form-control" hidden />
+            
+            <button type="submit" class="btn-theme btn">Update Course</button>
+        </EditForm>
+        }
+        else 
+        {
+            <p>Loading...</p>
+        }
+    </div>
+</section>
+
+
+@code {
+    int i = 0;
+
+    [SupplyParameterFromQuery]
+    private string statusMessage { get; set; } = "";
+    [Parameter] public string courseId { get; set; }
+
+    [SupplyParameterFromForm(Name = "course")]
+    private Course course { get; set; } = new Course();
+
+    [SupplyParameterFromForm(Name = "categories")]
+    private string categories { get; set; }
+
+    [SupplyParameterFromForm(Name = "includesText")]
+    private string includesText { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+     
+
+        course = await CourseService.GetCourseByIdAsync(courseId);
+        if (course != null && course.Content != null)
+        {
+            // Convert the Includes array to a single string separated by new lines
+            includesText = string.Join(", ", course.Content.Includes);
+            categories = string.Join(", ", course.Categories);
+        }
+    }
+
+    private async Task HandleValidSubmit(EditContext editContext)
+    {
+        course.Categories = categories?.Split(',').Select(c => c.Trim()).ToArray();
+        course.Content.Includes = includesText?.Split(',').Select(i => i.Trim()).ToArray();
+
+        var result = await CourseService.RequestUpdateCourseAsync(course);
+        if (result != null)
+        {
+            statusMessage = "Course updated successfully";
+        }
+    }
+
+
+    private void AddAuthor()
+    {
+        course.Authors.Add(new Author());
+    }
+    private void RemoveAuthor(Author author)
+    {
+        course.Authors.Remove(author);
+    }
+
+    private void AddProgramDetail()
+    {
+        course.Content.ProgramDetails.Add(new ProgramDetail());
+    }
+    private void RemoveProgramDetail(ProgramDetail programDetail)
+    {
+        course.Content.ProgramDetails.Remove(programDetail);
+    }
+}

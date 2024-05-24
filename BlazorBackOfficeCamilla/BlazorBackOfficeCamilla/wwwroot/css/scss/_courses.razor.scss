@@ -1,0 +1,67 @@
+.container {
+    .course-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        position: relative;
+        z-index: -5;
+
+        .course {
+            text-decoration: none;
+            color: black;
+            position: relative;
+            z-index: 4;
+            max-height: min-content;
+
+            .course-details {
+                text-decoration: none;
+
+                .info {
+                    padding: 15px;
+                    background-color: var(--color-gray-000);
+                    border: 0.5px solid var(--color-gray-100);
+
+                    .course-title {
+                        color: var(--color-gray-800);
+                        margin-bottom: 0;
+                    }
+
+                    .course-creator {
+                        font-size: 0.8rem;
+                        color: #565973;
+                        margin-bottom: 1rem;
+                    }
+
+                    .course-prices {
+                        display: flex;
+                        gap: 20px;
+                        font-weight: 900;
+
+                        .discount-price {
+                            color: #EF4444;
+                        }
+
+                        .original-price {
+                            color: #6366F1;
+                        }
+
+                        .discount {
+                            color: #9397AD;
+                            text-decoration: line-through;
+                            font-weight: 400;
+                        }
+                    }
+
+
+                    .course-footer {
+                        display: flex;
+                        font-weight: 200;
+                        gap: 20px;
+                        font-size: 0.8rem;
+                        color: #9397AD;
+                    }
+                }
+            }
+        }
+    }
+}
