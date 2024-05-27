@@ -4,6 +4,7 @@
 @rendermode InteractiveServer
 
 <h3>SubscribeAdmin</h3>
+
        @if (!string.IsNullOrWhiteSpace(statusMessage))
 {
     <p>@statusMessage</p>
@@ -35,16 +36,16 @@
 @code {
     [SupplyParameterFromQuery]
     private string statusMessage { get; set; } = "";
-    private List<subscribersmodel> subscribers;
+    private List<Subscribersmodel> subscribers;
 
-    public class subscribersmodel
+    public class Subscribersmodel
     {
         public string Email { get; set; }
     }
 
     protected override async Task OnInitializedAsync()
     {
-        var getSubscribers = await Http.GetFromJsonAsync<List<subscribersmodel>>("https://newsletterprovider-silicon-camilla.azurewebsites.net/api/GetSubscribers?code=csLVO2P43-Grw7wsMj2BSb7_sHOLjQrokvx6dgVNhzBuAzFu0WM8wg%3D%3D");
+        var getSubscribers = await Http.GetFromJsonAsync<List<Subscribersmodel>>("https://newsletterprovider-silicon-camilla.azurewebsites.net/api/GetSubscribers?code=csLVO2P43-Grw7wsMj2BSb7_sHOLjQrokvx6dgVNhzBuAzFu0WM8wg%3D%3D");
         if (getSubscribers != null)
             subscribers = getSubscribers;
 

@@ -249,6 +249,12 @@ form textarea {
   margin: 0;
 }
 
+.wrapper {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
 .btn-theme {
   border-radius: 6px;
   text-align: center;

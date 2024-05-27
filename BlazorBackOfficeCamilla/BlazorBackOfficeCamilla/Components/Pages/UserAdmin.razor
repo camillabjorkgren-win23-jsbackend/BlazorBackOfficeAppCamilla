@@ -1,17 +1,86 @@
 ﻿@page "/useradmin"
+@layout BlazorBackOfficeCamilla.Components.Layout.MainLayout
+@using BlazorBackOfficeCamilla.Data
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
 
 <h3>UserAdmin</h3>
 
-@*Alla användare sida?*@
-@* get users, buttons to press delete, update *@
+<section class="useradmin">
+    <div class="container">
+        @if(!String.IsNullOrEmpty(StatusMessage))
+        {
+            <p>@StatusMessage</p>
+        }
 
-@*Alla registrerade för nyhetsbrev sida?*@
-@* get subscribers, buttons to press delete, update *@
+        @if(users != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        @foreach (var user in users)
+                        {
+                            @foreach (var (role, index) in user.Roles.Select((r, i) => (r, i)))
+                            {
+                                <th>Role @(index + 1)</th>
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in users)
+                    {
+                        var link = $"/updateuser/{user.Id}";
+                        <tr>
+                            <td>@user.FirstName @user.LastName</td>
+                            <td>@user.Email</td>
+                            @foreach (var role in user.Roles)
+                            {
+                                <td>@role</td>
+                            }
+                            <td>
+                                <a href="@link"><button class="btn btn-theme">Update</button></a>
+                                <button class="btn btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No users found</p>
+        }
 
+    </div>
+</section>
 
-@*Alla administratörer sida?*@
-@* get admins, buttons to create, press delete, update *@
 
 @code {
+    private IEnumerable<UsersWithRolesDisplay> users;
 
+    private string StatusMessage { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await Http.GetFromJsonAsync<IEnumerable<UsersWithRolesDisplay>>("http://localhost:7074/api/GetUsersWithRoles");
+            if (response != null)
+            {
+                users = response;
+            }
+            else
+            {
+                StatusMessage = "No users found";
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"{ex.Message}";
+        }
+    }
 }

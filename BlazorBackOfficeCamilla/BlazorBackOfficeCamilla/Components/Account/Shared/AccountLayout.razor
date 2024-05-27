@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorBackOfficeCamilla.Data
+@inherits LayoutComponentBase
 @layout BlazorBackOfficeCamilla.Components.Layout.MainLayout
 @inject NavigationManager NavigationManager
 
@@ -12,6 +13,9 @@ else
 }
 
 @code {
+    [CascadingParameter]
+    public ApplicationUser user { get; set; }
+
     [CascadingParameter]
     private HttpContext? HttpContext { get; set; }
 

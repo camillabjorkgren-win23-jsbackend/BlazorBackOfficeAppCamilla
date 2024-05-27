@@ -36,3 +36,10 @@ $font-manrope: 'Manrope', sans-serif;
 @mixin h4 { @include standard-heading; font-size: 24px !important; }
 @mixin h5 { @include standard-heading; font-size: 20px !important; }
 @mixin h6 { @include standard-heading; font-size: 16px !important; }
+
+
+.wrapper {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
