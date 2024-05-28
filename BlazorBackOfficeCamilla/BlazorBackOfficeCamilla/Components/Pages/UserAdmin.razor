@@ -1,49 +1,57 @@
 ﻿@page "/useradmin"
 @layout BlazorBackOfficeCamilla.Components.Layout.MainLayout
 @using BlazorBackOfficeCamilla.Data
-@attribute [StreamRendering]
+
 @rendermode InteractiveServer
 
+@attribute [StreamRendering]
 
 <h3>UserAdmin</h3>
 
 <section class="useradmin">
     <div class="container">
-        @if(!String.IsNullOrEmpty(StatusMessage))
+        @if (!String.IsNullOrEmpty(StatusMessage))
         {
             <p>@StatusMessage</p>
         }
 
-        @if(users != null)
+        @if (users != null)
         {
             <table class="table">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        @foreach (var user in users)
-                        {
-                            @foreach (var (role, index) in user.Roles.Select((r, i) => (r, i)))
-                            {
-                                <th>Role @(index + 1)</th>
-                            }
-                        }
+                       <th>Roles</th>
+
+                        
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var user in users)
                     {
-                        var link = $"/updateuser/{user.Id}";
+                        userId = new UserId { Id = user.Id };
+                        var linkUpdate = $"/updateuser/{user.Id}";
                         <tr>
                             <td>@user.FirstName @user.LastName</td>
                             <td>@user.Email</td>
-                            @foreach (var role in user.Roles)
+                            @if (user.Roles == null || !user.Roles.Any())
                             {
-                                <td>@role</td>
+                            <td>No current roles added to this user</td>
                             }
+                            else
+                            {
+                                    var rolesString = string.Join(", ", user.Roles);
+                                    <td>@rolesString</td>
+                                
+                            }
+                           
                             <td>
-                                <a href="@link"><button class="btn btn-theme">Update</button></a>
-                                <button class="btn btn-danger">Delete</button>
+                                <a href="@linkUpdate"><button class="btn btn-theme">Update</button></a>
+                                <EditForm Model="userId" OnValidSubmit="@(() => Delete(userId))" novalidate>
+                                    <InputText type="hidden" @bind-Value="userId.Id" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </EditForm>
                             </td>
                         </tr>
                     }
@@ -63,6 +71,27 @@
     private IEnumerable<UsersWithRolesDisplay> users;
 
     private string StatusMessage { get; set; } = null!;
+
+    public UserId userId = new UserId();
+
+    public class UserId
+    {
+        public string Id { get; set; }
+    }
+
+    public async Task Delete(UserId userId)
+    {
+        var response = await Http.PostAsJsonAsync($"http://localhost:7074/api/DeleteUser", userId);
+        if (response.IsSuccessStatusCode)
+        {
+            StatusMessage = "User deleted";
+            await OnInitializedAsync();
+        }
+        else
+        {
+            StatusMessage = "User not deleted";
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
