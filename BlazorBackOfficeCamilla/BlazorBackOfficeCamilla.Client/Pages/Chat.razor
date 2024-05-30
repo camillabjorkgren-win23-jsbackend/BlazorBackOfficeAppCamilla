@@ -95,7 +95,7 @@
         }
 
 
-        connection = new HubConnectionBuilder().WithUrl("chatprovider-silicon-camilla.azurewebsites.net?key=JDJ5JDEwJEc0dUtoT1FlYWRPaEF4RmtCRjE4Z2VlbFRid1Jjb3F3ODVLZDdSUkZCQjFmVWdld0g4Lnd1").Build();
+        connection = new HubConnectionBuilder().WithUrl("https://chatprovider-silicon-camilla.azurewebsites.net/chathub?key=JDJ5JDEwJEc0dUtoT1FlYWRPaEF4RmtCRjE4Z2VlbFRid1Jjb3F3ODVLZDdSUkZCQjFmVWdld0g4Lnd1").Build();
 
         connection.On<string, string, DateTime>("ReceiveMessage", (fromUser, message, dateTime) =>
          {
