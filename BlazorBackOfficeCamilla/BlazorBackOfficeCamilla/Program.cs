@@ -2,6 +2,7 @@ using BlazorBackOfficeCamilla.Client.Pages;
 using BlazorBackOfficeCamilla.Components;
 using BlazorBackOfficeCamilla.Components.Account;
 using BlazorBackOfficeCamilla.Data;
+using BlazorBackOfficeCamilla.Hubs;
 using BlazorBackOfficeCamilla.Services;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.SystemTextJson;
@@ -43,6 +44,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddSignalR();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddAuthorization(x =>
@@ -75,5 +78,7 @@ app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(BlazorBackOfficeCamilla.Client._Imports).Assembly);
 app.MapAdditionalIdentityEndpoints();
+
+app.MapHub<ChatHub>("/chathub");
 
 app.Run();
