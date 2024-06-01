@@ -35,7 +35,7 @@
 
 .btn-red {
     @include button;
-    background-color: $danger;
+    background-color: var(--color-danger);
     color: var(--color-white);
     border: none;
 
@@ -48,14 +48,12 @@
 
 .btn-theme-s {
     @include button;
-    @include theme-shadow;
     background-color: var(--color-theme);
     color: var(--color-white);
     padding-top: 10px;
     padding-bottom: 13px;
 
     &:hover {
-        @include theme-secondary-shadow;
         text-decoration: none;
         background-color: var(--color-gray-700);
         color: var(--color-gray-000);
@@ -192,7 +190,6 @@ a {
     text-decoration: none !important;
 
     i {
-        @include shadow-s;
         background-color: var(--color-white);
         display: flex;
         align-items: center;

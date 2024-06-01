@@ -1,0 +1,17 @@
+.sidebar {
+    height: 100%;
+    .nav-scrollable {
+        background-color: #6366F1;
+
+        .nav-item {
+            color: #FFFFFF; 
+
+            &.active {
+                background-color: #565973;
+            }
+        }
+        .nav-link {
+            color: #6366F1;
+        }
+    }
+}

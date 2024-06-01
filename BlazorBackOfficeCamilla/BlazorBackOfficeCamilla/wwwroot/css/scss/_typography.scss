@@ -1,6 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
 $font-manrope: 'Manrope', sans-serif;
+html, body {
+    height: 100% !important;
+    margin: 0;
+    padding: 0;
+}
 
+.page {
+    height: 100vh !important;
+    display: flex; 
+}
+
+.sidebar {
+    height: 100vh !important;
+ }
 @mixin standard-text {
     line-height: 160%;
     font-weight: 400;
@@ -14,32 +27,384 @@ $font-manrope: 'Manrope', sans-serif;
     color: var(--color-gray-900);
 }
 
-@mixin text-nav { @include standard-text; font-size: 16px; color: var(--color-gray-800); font-weight: 600 !important; }
+@mixin text-nav {
+    @include standard-text;
+    font-size: 16px;
+    color: var(--color-gray-800);
+    font-weight: 600 !important;
+}
 
-@mixin text-xs { @include standard-text; font-size: 12px !important;}
-@mixin text-s { @include standard-text; font-size: 14px !important; }
-@mixin text-m { @include standard-text; font-size: 16px !important; }
-@mixin text-lg { @include standard-text; font-size: 18px !important; }
-@mixin text-xl { @include standard-text; font-size: 20px !important; }
-@mixin text-lead { @include standard-text; font-size: 24px !important; }
+@mixin text-xs {
+    @include standard-text;
+    font-size: 12px !important;
+}
 
-@mixin d1 { @include standard-heading; font-size: 80px !important; }
-@mixin d2 { @include standard-heading; font-size: 72px !important; }
-@mixin d3 { @include standard-heading; font-size: 64px !important; }
-@mixin d4 { @include standard-heading; font-size: 56px !important; }
-@mixin d5 { @include standard-heading; font-size: 48px !important; }
-@mixin d6 { @include standard-heading; font-size: 42px !important; }
+@mixin text-s {
+    @include standard-text;
+    font-size: 14px !important;
+}
 
-@mixin h1 { @include standard-heading; font-size: 40px !important; }
-@mixin h2 { @include standard-heading; font-size: 32px !important; }
-@mixin h3 { @include standard-heading; font-size: 28px !important; }
-@mixin h4 { @include standard-heading; font-size: 24px !important; }
-@mixin h5 { @include standard-heading; font-size: 20px !important; }
-@mixin h6 { @include standard-heading; font-size: 16px !important; }
+@mixin text-m {
+    @include standard-text;
+    font-size: 16px !important;
+}
+
+@mixin text-lg {
+    @include standard-text;
+    font-size: 18px !important;
+}
+
+@mixin text-xl {
+    @include standard-text;
+    font-size: 20px !important;
+}
+
+@mixin text-lead {
+    @include standard-text;
+    font-size: 24px !important;
+}
+
+@mixin d1 {
+    @include standard-heading;
+    font-size: 80px !important;
+}
+
+@mixin d2 {
+    @include standard-heading;
+    font-size: 72px !important;
+}
+
+@mixin d3 {
+    @include standard-heading;
+    font-size: 64px !important;
+}
+
+@mixin d4 {
+    @include standard-heading;
+    font-size: 56px !important;
+}
+
+@mixin d5 {
+    @include standard-heading;
+    font-size: 48px !important;
+}
+
+@mixin d6 {
+    @include standard-heading;
+    font-size: 42px !important;
+}
+
+@mixin h1 {
+    @include standard-heading;
+    font-size: 40px !important;
+}
+
+@mixin h2 {
+    @include standard-heading;
+    font-size: 32px !important;
+}
+
+@mixin h3 {
+    @include standard-heading;
+    font-size: 28px !important;
+}
+
+@mixin h4 {
+    @include standard-heading;
+    font-size: 24px !important;
+}
+
+@mixin h5 {
+    @include standard-heading;
+    font-size: 20px !important;
+}
+
+@mixin h6 {
+    @include standard-heading;
+    font-size: 16px !important;
+}
 
 
 .wrapper {
     height: 100vh;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 1fr auto;
+}
+
+.chat-bubble-right {
+    text-align: right;
+    background-color: var(--color-theme);
+    margin-left: auto;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 75%;
+    color: white;
+}
+
+.chat-bubble-left {
+    text-align: left;
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 75%;
+    margin-right: auto;
+}
+
+form {
+
+    .form-check {
+        align-items: center;
+        justify-content: center;
+
+        #RememberMe {
+            margin-right: 15px;
+        }
+    }
+
+    input {
+        padding: 1rem;
+        border-radius: 8px !important;
+        border: 1px solid var(--color-gray-400) !important;
+
+        &.input-validation-error {
+            border: 2px solid var(--color-danger) !important;
+            border-radius: 0.5rem !important;
+            color: var(--color-danger);
+        }
+
+        &::placeholder {
+            color: var(--color-gray-400) !important;
+        }
+    }
+}
+
+.form {
+    @include standard-heading;
+    background-color: var(--color-gray-000);
+    border-radius: 6px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    margin-top: 2rem;
+
+
+    .form-control {
+        background: var(--color-gray-050);
+        border: 1px solid var(--color-gray);
+        border-radius: 8px !important;
+        border: 1px solid var(--color-gray-400);
+        color: var(--color-gray-150);
+        padding: 1rem;
+
+        input::placeholder {
+            color: var(--color-gray);
+        }
+
+
+        &.input-validation-error {
+            border: 2px solid var(--color-danger)
+            !important;
+            border-radius: 0.5rem !important;
+            color: var(--color-danger);
+        }
+    }
+
+
+    .form-select {
+        background: var(--color-gray-050);
+        border: 1px solid var(--color-gray);
+        color: var(--color-gray-150);
+    }
+
+    textarea {
+        background: var(--color-gray-050);
+        border: 1px solid var(--color-gray);
+        color: var(--color-gray-150);
+    }
+
+    span {
+        &.field-validation-error {
+            @include text-s;
+            color: var(--color-danger);
+        }
+    }
+
+    .form-check-label {
+        @include standard-text;
+        margin-left: 0.5rem;
+    }
+
+    .form-check {
+        @include standard-text;
+        display: inline-flex;
+        align-items: center;
+        padding: 0;
+
+        #RememberMe {
+            margin: 0;
+        }
+
+        .form-check-input {
+            margin: 0;
+        }
+    }
+}
+
+@mixin button {
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    padding: 8px 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-theme {
+    @include button;
+    background-color: var(--color-theme);
+    color: var(--color-white);
+    border: none;
+
+    &:hover {
+        text-decoration: none;
+        background-color: var(--color-gray-700);
+        color: var(--color-gray-000);
+    }
+}
+
+.btn {
+    @include button;
+    border: none;
+
+    &.active {
+        background-color: var(--color-theme);
+        color: var(--color-white);
+        border: none;
+    }
+}
+
+.btn-red {
+    @include button;
+    background-color: var(--color-danger-dark);
+    color: var(--color-white);
+    border: none;
+
+    &:hover {
+        text-decoration: none;
+        background-color: var(--color-gray-700);
+        color: var(--color-gray-000);
+    }
+}
+
+.btn-theme-s {
+    @include button;
+    background-color: var(--color-theme);
+    color: var(--color-white);
+    padding-top: 10px;
+    padding-bottom: 13px;
+
+    &:hover {
+
+        text-decoration: none;
+        background-color: var(--color-gray-700);
+        color: var(--color-gray-000);
+    }
+}
+
+.btn-gray {
+    @include button;
+    background-color: var(--color-gray-200);
+    color: var(--white);
+    border: none;
+
+    &:hover {
+        text-decoration: none;
+        background-color: var(--color-gray-700);
+        color: var(--color-gray-000);
+    }
+}
+
+.btn-switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    label {
+        @include text-nav;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 25px;
+
+        & input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+
+            &:checked + .slider {
+                background-color: var(--color-theme);
+            }
+
+            &:focus + .slider {
+                box-shadow: 0 0 1px var(--color-theme);
+            }
+
+            &:checked + .slider:before {
+                transform: translateX(20px);
+                background-color: var(--color-white);
+            }
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--color-gray-700);
+            transition: .4s;
+
+            &:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 3px;
+                bottom: 2.7px;
+                background-color: var(--color-white);
+                transition: .4s;
+            }
+
+            &.round {
+                border-radius: 34px;
+            }
+
+            &.round:before {
+                border-radius: 50%;
+            }
+        }
+    }
+}
+
+.btn-social {
+    @include text-xl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    background-color: var(--color-gray-200);
+    color: var(--color-gray-800);
+
+    &:hover {
+        text-decoration: none;
+        background-color: var(--color-gray-700);
+        color: var(--color-gray-000);
+    }
 }

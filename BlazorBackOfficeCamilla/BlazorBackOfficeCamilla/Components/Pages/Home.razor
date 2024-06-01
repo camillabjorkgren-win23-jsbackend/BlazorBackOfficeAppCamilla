@@ -1,7 +1,155 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+@using System.ComponentModel.DataAnnotations
+@using BlazorBackOfficeCamilla.Components.Account
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using BlazorBackOfficeCamilla.Data
 
-<h1>Hello, world!</h1>
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager NavigationManager
+@inject IdentityRedirectManager RedirectManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-Welcome to your new app.
+<PageTitle>Log in</PageTitle>
+
+
+
+<section class="login">
+    <div class="container">
+        <h1>Log in as Admin</h1>
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+         
+        }
+        @if (!string.IsNullOrEmpty(message))
+        {
+            <div class="alert alert-success" role="alert">
+                @message
+            </div>
+            @if (isLoggedIn)
+            {
+                <p> You are logged in. </p>
+                <div>
+                    <a href="/courseadmin" class="btn btn-theme">To Course Admin</a>
+                </div>
+            }
+        }
+        <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+            <DataAnnotationsValidator />
+            <hr />
+            <ValidationSummary class="text-danger" role="alert" />
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <ValidationMessage For="() => Input.Email" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+
+                <ValidationMessage For="() => Input.Password" class="text-danger" />
+            </div>
+            <div class="checkbox mb-3">
+                <label class="form-label">
+                    <InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input" />
+                    Remember me
+                </label>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-theme">Log in</button>
+            </div>        
+        </EditForm>
+   
+       
+    </div>
+</section>
+
+
+@code {
+    private string? errorMessage;
+    bool isLoggedIn;
+
+
+    private string? message;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpMethods.IsGet(HttpContext.Request.Method))
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+        }
+
+       
+
+    }
+
+
+    public async Task LoginUser()
+    {
+
+        var user = await SignInManager.UserManager.FindByEmailAsync(Input.Email);
+        bool userIsAdmin = false;
+        var userRoles = await Http.GetFromJsonAsync<IEnumerable<string>>($"https://userprovider-silicon-camilla.azurewebsites.net/api/GetUserRolesByUserId?code=Zsj31kVdKpTlz-OSo0AxwmUgcsu9-9gGHbKw7eyTMWRwAzFu6Std8Q%3D%3D&userId={user.Id}");
+        if (userRoles.Any(role => role == "Admin" || role == "CIO" || role == "SuperAdmin"))
+        {
+            userIsAdmin = true;
+        }
+        if (userIsAdmin)
+        {
+            try
+            {
+                var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    isLoggedIn = true;
+                   
+                    message = "User logged in successfully";
+                    Input = new InputModel();
+                   
+                    StateHasChanged();
+                    
+                    //bugg here by microsoft both RedirectManager and NavigateTo: https://stackoverflow.com/questions/58076758/navigationerror-on-navigateto
+                    RedirectManager.RedirectTo("/courseadmin");
+                }
+                else
+                {
+                    errorMessage = "Error: Invalid login attempt";
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "Error:something went wrong because of bug of Microsoft. User logged in successfully.";
+                await InvokeAsync(StateHasChanged);
+            }
+    }
+        else
+        {
+            errorMessage = "Error: You are not authorized to log in.";
+        }
+    }
+
+    private sealed class InputModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
+    }
+}

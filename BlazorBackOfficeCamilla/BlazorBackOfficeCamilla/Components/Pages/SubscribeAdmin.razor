@@ -2,15 +2,19 @@
 
 @attribute [StreamRendering]
 @rendermode InteractiveServer
+@attribute [Authorize(Roles = "Admin, SuperAdmin, CIO")]
 
-<h3>SubscribeAdmin</h3>
 
-       @if (!string.IsNullOrWhiteSpace(statusMessage))
+
+ @if (!String.IsNullOrEmpty(StatusMessage))
 {
-    <p>@statusMessage</p>
+    <div class="alert" role="alert">
+        @StatusMessage
+    </div>
 }
 <section class="subscribers">
     <div class="container">
+        <h2>SubscribeAdmin</h2>
         @if (subscribers == null)
         {
             <div><i class="fa-sharp fa-solid fa-spinner-third fa-spin"></i></div>
@@ -18,15 +22,15 @@
         else
         {
 
-            <h2>Subscribers</h2>
+            <h5>Subscribers</h5>
             @foreach (var subscriber in subscribers)
             {
                 var link = $"/update-subscriber/{subscriber.Email}";
                 <div class="subscriber">
-                    <h2 class="course-title">@subscriber.Email</h2>
+                    <h2 class="subscriber-email">@subscriber.Email</h2>
                 <hr />
                     <a href="@link"><button class="btn btn-theme">Update</button></a>
-                    <button class="btn btn-red" @onclick="() => DeleteSubscriber(subscriber.Email)">Delete</button>
+                    <button class="btn btn-danger" @onclick="() => DeleteSubscriber(subscriber.Email)">Delete</button>
                 </div>
             }
         }
@@ -35,7 +39,7 @@
 
 @code {
     [SupplyParameterFromQuery]
-    private string statusMessage { get; set; } = "";
+    private string StatusMessage { get; set; } = "";
     private List<Subscribersmodel> subscribers;
 
     public class Subscribersmodel
@@ -55,12 +59,12 @@
         var response = await Http.PostAsJsonAsync($"https://newsletterprovider-silicon-camilla.azurewebsites.net/api/DeleteSubscriber?code=Plgfty5JMj22i2MqsP5lqnt2vZ6G_IqIgIQu2t3HdaOkAzFuHX7ZBg%3D%3D", new { Email = email });
         if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
-            statusMessage = "Subscriber deleted successfully";
+            StatusMessage = "Subscriber deleted successfully";
             StateHasChanged();
         }
         else
         {
-            statusMessage = "Failed to delete subscriber";
+            StatusMessage = "Failed to delete subscriber";
         }
     }
 }

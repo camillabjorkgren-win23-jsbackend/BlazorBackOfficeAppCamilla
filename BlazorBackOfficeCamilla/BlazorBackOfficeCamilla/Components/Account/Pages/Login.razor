@@ -1,4 +1,4 @@
-﻿@page "/Account/Login"
+﻿@* @page "/"
 @layout BlazorBackOfficeCamilla.Components.Layout.MainLayout
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
@@ -12,10 +12,11 @@
 
 <PageTitle>Log in</PageTitle>
 
-<h1>Log in</h1>
-<div class="row">
-    <div class="col-md-4">
+
+
         <section>
+            <div class="container">
+    <h1>Log in</h1>
             <StatusMessage Message="@errorMessage" />
             <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
                 <DataAnnotationsValidator />
@@ -24,12 +25,11 @@
                 <ValidationSummary class="text-danger" role="alert" />
                 <div class="form-floating mb-3">
                     <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label for="email" class="form-label">Email</label>
                     <ValidationMessage For="() => Input.Email" class="text-danger" />
                 </div>
                 <div class="form-floating mb-3">
                     <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label for="password" class="form-label">Password</label>
+
                     <ValidationMessage For="() => Input.Password" class="text-danger" />
                 </div>
                 <div class="checkbox mb-3">
@@ -53,9 +53,9 @@
                     </p>
                 </div>
             </EditForm>
+            </div
         </section>
-    </div>
-</div>
+
 
 @code {
     private string? errorMessage;
@@ -83,7 +83,7 @@
 
         var user = await SignInManager.UserManager.FindByEmailAsync(Input.Email);
         bool userIsAdmin = false;
-        var userRoles = await Http.GetFromJsonAsync<IEnumerable<string>>($"http://localhost:7074/api/GetUserRolesByUserId?userId={user.Id}");
+        var userRoles = await Http.GetFromJsonAsync<IEnumerable<string>>($"https://userprovider-silicon-camilla.azurewebsites.net/api/GetUserRolesByUserId?code=Zsj31kVdKpTlz-OSo0AxwmUgcsu9-9gGHbKw7eyTMWRwAzFu6Std8Q%3D%3D?userId={user.Id}");
         if (userRoles.Any(role => role == "Admin" || role == "CIO" || role == "SuperAdmin"))
         {
             userIsAdmin = true;
@@ -121,3 +121,4 @@
         public bool RememberMe { get; set; }
     }
 }
+ *@

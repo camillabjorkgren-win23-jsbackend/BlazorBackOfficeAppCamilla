@@ -1,0 +1,42 @@
+﻿.manageadmin {
+    background-color: var(--color-gray-100);
+    padding: 60px 0;
+
+    > .container {
+        display: flex;
+        flex-direction: column;
+
+        .users {
+            margin-top: 50px;
+            
+            > form {
+
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 3rem;
+                width: 100%;
+
+                .checkbox-group {
+                    display: grid;
+                    gap: 0.5rem;
+                    grid-area: checkbox;
+                    grid-template-columns: repeat(4, 1fr);
+
+                    .checkbox {
+                       
+
+                        input {
+                            accent-color: var(--color-theme);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        > button {
+            margin-top: 1rem;
+            
+        }
+    }
+}

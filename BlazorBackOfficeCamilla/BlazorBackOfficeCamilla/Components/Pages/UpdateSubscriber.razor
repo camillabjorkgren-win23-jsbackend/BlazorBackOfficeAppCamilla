@@ -2,17 +2,22 @@
 
 @using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "Admin, SuperAdmin, CIO")]
 
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 
-<h3>UpdateSubscriber</h3>
-@if (!string.IsNullOrWhiteSpace(StatusMessage))
-{
-    <p>@StatusMessage</p>
-}
+
 <section class="newsletter" id="newsletter">
     <div class="container">
+
+        @if (!String.IsNullOrEmpty(StatusMessage))
+        {
+            <div class="alert alert-success" role="alert">
+                @StatusMessage
+            </div>
+        }
+        <h3>UpdateSubscriber</h3>
         <div class="title">
             <div class="arrows"><img src="/images/arrows.svg" alt="arrows"></div>
         </div>

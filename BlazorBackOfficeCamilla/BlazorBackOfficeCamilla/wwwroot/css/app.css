@@ -1,176 +1,42 @@
 ﻿@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
-.container .course-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  position: relative;
-  z-index: -5;
-}
-.container .course-list .course {
-  text-decoration: none;
-  color: black;
-  position: relative;
-  z-index: 4;
-  max-height: min-content;
-}
-.container .course-list .course .course-details {
-  text-decoration: none;
-}
-.container .course-list .course .course-details .info {
-  padding: 15px;
-  background-color: var(--color-gray-000);
-  border: 0.5px solid var(--color-gray-100);
-}
-.container .course-list .course .course-details .info .course-title {
-  color: var(--color-gray-800);
-  margin-bottom: 0;
-}
-.container .course-list .course .course-details .info .course-creator {
-  font-size: 0.8rem;
-  color: #565973;
-  margin-bottom: 1rem;
-}
-.container .course-list .course .course-details .info .course-prices {
-  display: flex;
-  gap: 20px;
-  font-weight: 900;
-}
-.container .course-list .course .course-details .info .course-prices .discount-price {
-  color: #EF4444;
-}
-.container .course-list .course .course-details .info .course-prices .original-price {
-  color: #6366F1;
-}
-.container .course-list .course .course-details .info .course-prices .discount {
-  color: #9397AD;
-  text-decoration: line-through;
-  font-weight: 400;
-}
-.container .course-list .course .course-details .info .course-footer {
-  display: flex;
-  font-weight: 200;
-  gap: 20px;
-  font-size: 0.8rem;
-  color: #9397AD;
-}
-
-:root {
-  --color-gray-000: #FFFFFF;
-  --color-gray-050: #FFFFFF;
-  --color-gray-100: #F3F6FF;
-  --color-gray-150: #565973;
-  --color-gray-200: #EFF2FC;
-  --color-gray-300: #E2E5F1;
-  --color-gray-400: #D4D7E5;
-  --color-gray-500: B47N7C9;
-  --color-gray-600: #9797AD;
-  --color-gray-700: #565973;
-  --color-gray-800: #33354D;
-  --color-gray-900: #0B0F19;
-  --color-white: #FFFFFF;
-  --color-black: #000000;
-  --color-gray: #EFF2FC;
-  --color-theme: #6366F1;
-  --color-danger: #F5D7DA;
-  --color-danger-dark: #E57E88;
-  --color-success: #BCF7D2;
-  --color-warning: #FFE8AD;
-  --color-info: #CFDEFD;
-  --font-standard: "Manrope", sans-serif;
-  --color-transparent: transparent;
-}
-
-:root.dark {
-  --color-gray-000: #0B0F19;
-  --color-gray-050: #161922;
-  --color-gray-100: #161922;
-  /* --color-gray-100: #33354D;*/
-  --color-gray-150: #565973;
-  --color-gray-200: #565973;
-  --color-gray-300: #9797AD;
-  --color-gray-400: B47N7C9;
-  --color-gray-500: #D4D7E5;
-  --color-gray-600: #E2E5F1;
-  --color-gray-700: #EFF2FC;
-  --color-gray-800: #F3F6FF;
-  --color-gray-900: #FFFFFF;
-  --color-white: #0B0F19;
-  --color-black: #000000;
-  --color-gray: #EFF2FC;
-  --color-theme: #6366F1;
-  --color-danger: #F5D7DA;
-  --color-danger-dark: #E57E88;
-  --color-success: #BCF7D2;
-  --color-warning: #FFE8AD;
-  --color-info: #CFDEFD;
-  --color-transparent: transparent;
-}
-
-.admincourse {
-  height: 100%;
-  padding: 50px;
-}
-.admincourse .container {
-  margin: 0 auto;
-  height: 100%;
-}
-.admincourse .container .courseform {
-  width: 90%;
-  margin: 0 auto;
-}
-.admincourse .container .courseform h2 {
-  text-align: center;
-}
-.admincourse .container .courseform .mb-3 {
-  width: 80%;
-  margin: 0 auto;
-}
-.admincourse .container .courseform .untouched {
-  background: var(--color-gray-300);
-}
-.admincourse .container .courseform .select-form {
-  margin: 0 auto;
-  text-align: center;
-  width: 80%;
-  margin-bottom: 1rem;
-  border: 1px solid var(--color-gray-300);
-}
-.admincourse .container .courseform .form-select {
-  margin: 0 auto;
-  text-align: center;
-  width: 80%;
-  margin-bottom: 1rem;
-  border: 1px solid var(--color-gray-300);
-}
-.admincourse .container .courseform .checkbox-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: baseline;
-  width: 80%;
-  margin: 0 auto;
-}
-.admincourse .container .courseform .checkbox {
-  display: flex;
-  width: 180px;
-  gap: 1rem;
-}
-.admincourse .container .courseform .checkbox input {
-  width: 20px;
-  height: 20px;
+html, body {
+  height: 100% !important;
+  margin: 0;
   padding: 0;
-  margin: 0;
 }
-.admincourse .container .courseform .checkbox label {
-  margin: 0;
+
+.page {
+  height: 100vh !important;
+  display: flex;
 }
-.admincourse .container .courseform a {
-  display: block;
-  width: fit-content;
-  margin: 0 auto;
+
+.sidebar {
+  height: 100vh !important;
 }
-.admincourse .container .courseform a button {
-  margin-top: 2rem;
+
+.wrapper {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.chat-bubble-right {
+  text-align: right;
+  background-color: var(--color-theme);
+  margin-left: auto;
+  border-radius: 15px;
+  padding: 10px;
+  max-width: 75%;
+  color: white;
+}
+
+.chat-bubble-left {
+  text-align: left;
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 10px;
+  max-width: 75%;
+  margin-right: auto;
 }
 
 form .form-check {
@@ -193,12 +59,14 @@ form input.input-validation-error {
 form input::placeholder {
   color: var(--color-gray-400) !important;
 }
-form textarea {
-  height: 200px;
-  resize: vertical;
-}
 
 .form {
+  line-height: 160%;
+  font-weight: 400;
+  color: var(--color-gray-700);
+  font-family: "Manrope", sans-serif;
+  font-weight: 800;
+  color: var(--color-gray-900);
   background-color: var(--color-gray-000);
   border-radius: 6px;
   font-weight: 700;
@@ -217,9 +85,9 @@ form textarea {
   color: var(--color-gray);
 }
 .form .form-control.input-validation-error {
-  border: 2px solid #EF4444 !important;
+  border: 2px solid var(--color-danger) !important;
   border-radius: 0.5rem !important;
-  color: #EF4444;
+  color: var(--color-danger);
 }
 .form .form-select {
   background: var(--color-gray-050);
@@ -232,12 +100,25 @@ form textarea {
   color: var(--color-gray-150);
 }
 .form span.field-validation-error {
-  color: #EF4444;
+  line-height: 160%;
+  font-weight: 400;
+  color: var(--color-gray-700);
+  font-family: "Manrope", sans-serif;
+  font-size: 14px !important;
+  color: var(--color-danger);
 }
 .form .form-check-label {
+  line-height: 160%;
+  font-weight: 400;
+  color: var(--color-gray-700);
+  font-family: "Manrope", sans-serif;
   margin-left: 0.5rem;
 }
 .form .form-check {
+  line-height: 160%;
+  font-weight: 400;
+  color: var(--color-gray-700);
+  font-family: "Manrope", sans-serif;
   display: inline-flex;
   align-items: center;
   padding: 0;
@@ -247,12 +128,6 @@ form textarea {
 }
 .form .form-check .form-check-input {
   margin: 0;
-}
-
-.wrapper {
-  height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
 }
 
 .btn-theme {
@@ -300,7 +175,7 @@ form textarea {
   justify-content: center;
   align-items: center;
   gap: 12px;
-  background-color: #EF4444;
+  background-color: var(--color-danger-dark);
   color: var(--color-white);
   border: none;
 }
@@ -319,14 +194,189 @@ form textarea {
   justify-content: center;
   align-items: center;
   gap: 12px;
-  box-shadow: 0px 8px 18px -8px rgba(99, 102, 241, 0.9);
   background-color: var(--color-theme);
   color: var(--color-white);
   padding-top: 10px;
   padding-bottom: 13px;
 }
 .btn-theme-s:hover {
-  box-shadow: 0px 8px 18px -8px rgba(19, 16, 34, 0.15);
+  text-decoration: none;
+  background-color: var(--color-gray-700);
+  color: var(--color-gray-000);
+}
+
+.btn-gray {
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  padding: 8px 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--color-gray-200);
+  color: var(--white);
+  border: none;
+}
+.btn-gray:hover {
+  text-decoration: none;
+  background-color: var(--color-gray-700);
+  color: var(--color-gray-000);
+}
+
+.btn-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-switch label {
+  line-height: 160%;
+  font-weight: 400;
+  color: var(--color-gray-700);
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  color: var(--color-gray-800);
+  font-weight: 600 !important;
+}
+.btn-switch .switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 25px;
+}
+.btn-switch .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.btn-switch .switch input:checked + .slider {
+  background-color: var(--color-theme);
+}
+.btn-switch .switch input:focus + .slider {
+  box-shadow: 0 0 1px var(--color-theme);
+}
+.btn-switch .switch input:checked + .slider:before {
+  transform: translateX(20px);
+  background-color: var(--color-white);
+}
+.btn-switch .switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-gray-700);
+  transition: 0.4s;
+}
+.btn-switch .switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 2.7px;
+  background-color: var(--color-white);
+  transition: 0.4s;
+}
+.btn-switch .switch .slider.round {
+  border-radius: 34px;
+}
+.btn-switch .switch .slider.round:before {
+  border-radius: 50%;
+}
+
+.btn-social {
+  line-height: 160%;
+  font-weight: 400;
+  color: var(--color-gray-700);
+  font-family: "Manrope", sans-serif;
+  font-size: 20px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  background-color: var(--color-gray-200);
+  color: var(--color-gray-800);
+}
+.btn-social:hover {
+  text-decoration: none;
+  background-color: var(--color-gray-700);
+  color: var(--color-gray-000);
+}
+
+.btn-theme {
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  padding: 8px 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--color-theme);
+  color: var(--color-white);
+  border: none;
+}
+.btn-theme:hover {
+  text-decoration: none;
+  background-color: var(--color-gray-700);
+  color: var(--color-gray-000);
+}
+
+.btn {
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  padding: 8px 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  border: none;
+}
+.btn.active {
+  background-color: var(--color-theme);
+  color: var(--color-white);
+  border: none;
+}
+
+.btn-red {
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  padding: 8px 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  border: none;
+}
+.btn-red:hover {
+  text-decoration: none;
+  background-color: var(--color-gray-700);
+  color: var(--color-gray-000);
+}
+
+.btn-theme-s {
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  padding: 8px 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--color-theme);
+  color: var(--color-white);
+  padding-top: 10px;
+  padding-bottom: 13px;
+}
+.btn-theme-s:hover {
   text-decoration: none;
   background-color: var(--color-gray-700);
   color: var(--color-gray-000);
@@ -476,7 +526,6 @@ a:hover {
   text-decoration: none !important;
 }
 .more-link i {
-  box-shadow: 0px 2px 6.4px -1px rgba(19, 16, 34, 0.03), 0px 4.4px 12px -1px rgba(19, 16, 34, 0.06);
   background-color: var(--color-white);
   display: flex;
   align-items: center;
@@ -491,6 +540,345 @@ a:hover {
 .more-link:hover i {
   background-color: var(--color-gray-800);
   color: var(--color-white);
+}
+
+:root {
+  --color-gray-000: #FFFFFF;
+  --color-gray-050: #FFFFFF;
+  --color-gray-100: #F3F6FF;
+  --color-gray-150: #565973;
+  --color-gray-200: #EFF2FC;
+  --color-gray-300: #E2E5F1;
+  --color-gray-400: #D4D7E5;
+  --color-gray-500: B47N7C9;
+  --color-gray-600: #9797AD;
+  --color-gray-700: #565973;
+  --color-gray-800: #33354D;
+  --color-gray-900: #0B0F19;
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-gray: #EFF2FC;
+  --color-theme: #6366F1;
+  --color-danger: #F5D7DA;
+  --color-danger-dark: #E57E88;
+  --color-success: #BCF7D2;
+  --color-warning: #FFE8AD;
+  --color-info: #CFDEFD;
+  --font-standard: "Manrope", sans-serif;
+  --color-transparent: transparent;
+}
+
+:root.dark {
+  --color-gray-000: #0B0F19;
+  --color-gray-050: #161922;
+  --color-gray-100: #161922;
+  /* --color-gray-100: #33354D;*/
+  --color-gray-150: #565973;
+  --color-gray-200: #565973;
+  --color-gray-300: #9797AD;
+  --color-gray-400: B47N7C9;
+  --color-gray-500: #D4D7E5;
+  --color-gray-600: #E2E5F1;
+  --color-gray-700: #EFF2FC;
+  --color-gray-800: #F3F6FF;
+  --color-gray-900: #FFFFFF;
+  --color-white: #0B0F19;
+  --color-black: #000000;
+  --color-gray: #EFF2FC;
+  --color-theme: #6366F1;
+  --color-danger: #F5D7DA;
+  --color-danger-dark: #E57E88;
+  --color-success: #BCF7D2;
+  --color-warning: #FFE8AD;
+  --color-info: #CFDEFD;
+  --color-transparent: transparent;
+}
+
+header {
+  padding: 15px 0;
+}
+header .container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  width: 100%;
+  justify-content: flex-start;
+}
+header .container h5 {
+  color: var(--color-white);
+  text-align: center;
+  margin: 0;
+  width: 100%;
+}
+header .container a {
+  width: 100%;
+  margin: auto;
+}
+header .container #logo {
+  width: fit-content;
+}
+
+footer {
+  background-color: var(--color-gray-100);
+  padding: 50px 0 30px 0;
+  line-height: 160%;
+  font-weight: 400;
+  color: var(--color-gray-700);
+  font-family: "Manrope", sans-serif;
+  font-size: 16px !important;
+  color: var(--color-gray-900);
+  height: fit-content;
+}
+footer .container {
+  text-align: center;
+}
+
+.sidebar {
+  height: 100%;
+}
+.sidebar .nav-scrollable {
+  background-color: #6366F1;
+}
+.sidebar .nav-scrollable .nav-item {
+  color: #FFFFFF;
+}
+.sidebar .nav-scrollable .nav-item.active {
+  background-color: #565973;
+}
+.sidebar .nav-scrollable .nav-link {
+  color: #6366F1;
+}
+
+.login {
+  background-color: var(--color-gray-100);
+}
+.login .container {
+  margin: auto;
+  padding: 15px;
+}
+
+.admincourse {
+  background-color: var(--color-gray-100);
+}
+.admincourse .container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+.admincourse .container .course {
+  text-decoration: none;
+  color: black;
+  max-height: min-content;
+  width: 100%;
+}
+.admincourse .container .course .img {
+  display: flex;
+  justify-content: center;
+}
+.admincourse .container .course .img img {
+  margin: auto;
+}
+.admincourse .container .course .info {
+  padding: 15px;
+  border: 0.5px solid var(--color-gray-100);
+  text-align: center;
+}
+.admincourse .container .course .info .course-title {
+  color: var(--color-gray-800);
+  margin-bottom: 0;
+}
+.admincourse .container .course .info .course-creator {
+  font-size: 0.8rem;
+  color: #565973;
+  margin-bottom: 1rem;
+  font-weight: 800;
+}
+.admincourse .container .course .info .course-prices {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-weight: 900;
+}
+.admincourse .container .course .info .course-prices .discount-price {
+  color: #EF4444;
+}
+.admincourse .container .course .info .course-prices .original-price {
+  color: #6366F1;
+}
+.admincourse .container .course .info .course-prices .discount {
+  color: #9397AD;
+  text-decoration: line-through;
+  font-weight: 400;
+}
+.admincourse .container .course .info .course-footer {
+  display: flex;
+  font-weight: 200;
+  gap: 20px;
+  font-size: 0.8rem;
+  color: #9397AD;
+  width: fit-content;
+  text-align: center;
+  margin: 20px auto;
+}
+
+.updatecourse {
+  height: 100%;
+  padding: 50px;
+}
+.updatecourse .container {
+  margin: 0 auto;
+  height: 100%;
+}
+.updatecourse .container .courseform {
+  width: 90%;
+  margin: 0 auto;
+}
+.updatecourse .container .courseform h2 {
+  text-align: center;
+}
+.updatecourse .container .courseform .mb-3 {
+  width: 80%;
+  margin: 0 auto;
+}
+.updatecourse .container .courseform .untouched {
+  background: var(--color-gray-300);
+}
+.updatecourse .container .courseform .select-form {
+  margin: 0 auto;
+  text-align: center;
+  width: 80%;
+  margin-bottom: 1rem;
+  border: 1px solid var(--color-gray-300);
+}
+.updatecourse .container .courseform .form-select {
+  margin: 0 auto;
+  text-align: center;
+  width: 80%;
+  margin-bottom: 1rem;
+  border: 1px solid var(--color-gray-300);
+}
+.updatecourse .container .courseform .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+  width: 80%;
+  margin: 0 auto;
+}
+.updatecourse .container .courseform .checkbox {
+  display: flex;
+  width: 180px;
+  gap: 1rem;
+}
+.updatecourse .container .courseform .checkbox input {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+}
+.updatecourse .container .courseform .checkbox label {
+  margin: 0;
+}
+.updatecourse .container .courseform a {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+}
+.updatecourse .container .courseform a button {
+  margin-top: 2rem;
+}
+
+form .form-check {
+  align-items: center;
+  justify-content: center;
+}
+form .form-check #RememberMe {
+  margin-right: 15px;
+}
+form input {
+  padding: 1rem;
+  border-radius: 8px !important;
+  border: 1px solid var(--color-gray-400) !important;
+}
+form input.input-validation-error {
+  border: 2px solid var(--color-danger) !important;
+  border-radius: 0.5rem !important;
+  color: var(--color-danger);
+}
+form input::placeholder {
+  color: var(--color-gray-400) !important;
+}
+form textarea {
+  height: 200px;
+  resize: vertical;
+}
+
+.form {
+  background-color: var(--color-gray-000);
+  border-radius: 6px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin-top: 2rem;
+}
+.form .form-control {
+  background: var(--color-gray-050);
+  border: 1px solid var(--color-gray);
+  border-radius: 8px !important;
+  border: 1px solid var(--color-gray-400);
+  color: var(--color-gray-150);
+  padding: 1rem;
+}
+.form .form-control input::placeholder {
+  color: var(--color-gray);
+}
+.form .form-control.input-validation-error {
+  border: 2px solid #EF4444 !important;
+  border-radius: 0.5rem !important;
+  color: #EF4444;
+}
+.form .form-select {
+  background: var(--color-gray-050);
+  border: 1px solid var(--color-gray);
+  color: var(--color-gray-150);
+}
+.form textarea {
+  background: var(--color-gray-050);
+  border: 1px solid var(--color-gray);
+  color: var(--color-gray-150);
+}
+.form span.field-validation-error {
+  color: #EF4444;
+}
+.form .form-check-label {
+  margin-left: 0.5rem;
+}
+.form .form-check {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+}
+.form .form-check #RememberMe {
+  margin: 0;
+}
+.form .form-check .form-check-input {
+  margin: 0;
+}
+
+.subscribers {
+  background-color: var(--color-gray-100);
+}
+.subscribers .container .subscriber {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.subscribers .container .subscriber .subscriber-email {
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .newsletter {
@@ -577,4 +965,50 @@ a:hover {
 .newsletter .container .information .validation {
   color: red;
   margin-left: 3rem;
+}
+
+.useradmin {
+  background-color: var(--color-gray-100);
+}
+.useradmin th, .useradmin td {
+  background-color: var(--color-gray-100);
+}
+.useradmin .actions {
+  text-align: center;
+}
+.useradmin .buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: end;
+}
+
+.manageadmin {
+  background-color: var(--color-gray-100);
+  padding: 60px 0;
+}
+.manageadmin > .container {
+  display: flex;
+  flex-direction: column;
+}
+.manageadmin > .container .users {
+  margin-top: 50px;
+}
+.manageadmin > .container .users > form {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 3rem;
+  width: 100%;
+}
+.manageadmin > .container .users > form .checkbox-group {
+  display: grid;
+  gap: 0.5rem;
+  grid-area: checkbox;
+  grid-template-columns: repeat(4, 1fr);
+}
+.manageadmin > .container .users > form .checkbox-group .checkbox input {
+  accent-color: var(--color-theme);
+}
+.manageadmin > .container > button {
+  margin-top: 1rem;
 }

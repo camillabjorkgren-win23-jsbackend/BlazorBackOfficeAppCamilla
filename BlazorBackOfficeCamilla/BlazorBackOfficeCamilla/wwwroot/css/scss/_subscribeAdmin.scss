@@ -1,0 +1,18 @@
+.subscribers {
+    background-color: var(--color-gray-100);
+
+    .container {
+        .subscriber {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+
+
+            .subscriber-email {
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+        }
+    }
+}

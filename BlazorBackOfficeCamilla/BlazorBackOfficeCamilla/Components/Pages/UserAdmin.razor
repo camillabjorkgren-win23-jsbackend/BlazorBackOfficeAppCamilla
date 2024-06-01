@@ -3,18 +3,21 @@
 @using BlazorBackOfficeCamilla.Data
 
 @rendermode InteractiveServer
+@attribute [Authorize(Roles = "Admin, SuperAdmin, CIO")]
 
 @attribute [StreamRendering]
 
-<h3>UserAdmin</h3>
+
 
 <section class="useradmin">
     <div class="container">
+        <h3>UserAdmin</h3>
         @if (!String.IsNullOrEmpty(StatusMessage))
         {
-            <p>@StatusMessage</p>
+            <div class="alert alert-success" role="alert">
+                @StatusMessage
+            </div>
         }
-
         @if (users != null)
         {
             <table class="table">
@@ -22,7 +25,8 @@
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
-                       <th>Roles</th>            
+                       <th>Roles</th>
+                           <th class="actions">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,12 +48,12 @@
                                 
                             }
                            
-                            <td>
+                            <td class="buttons">
                                 <a href="@linkUpdate"><button class="btn btn-theme">Update</button></a>
-                                <EditForm Model="userId" OnValidSubmit="@(() => Delete(userId))" novalidate>
-                                    <InputText type="hidden" @bind-Value="userId.Id" />
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </EditForm>
+                                    <EditForm Model="userId" OnValidSubmit="@(() => Delete(userId))" novalidate>
+                                        <InputText type="hidden" @bind-Value="userId.Id" />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </EditForm>                                                         
                             </td>
                         </tr>
                     }
@@ -79,7 +83,7 @@
 
     public async Task Delete(UserId userId)
     {
-        var response = await Http.PostAsJsonAsync($"http://localhost:7074/api/DeleteUser", userId);
+        var response = await Http.PostAsJsonAsync($"https://userprovider-silicon-camilla.azurewebsites.net/api/DeleteUser?code=2s0hhki7OP3ovSE80n4G2ZH8yoY91JhBILHjACWcbaAfAzFu-R6zPw%3D%3D", userId);
         if (response.IsSuccessStatusCode)
         {
             StatusMessage = "User deleted";
@@ -95,7 +99,7 @@
     {
         try
         {
-            var response = await Http.GetFromJsonAsync<IEnumerable<UsersWithRolesDisplay>>("http://localhost:7074/api/GetUsersWithRoles");
+            var response = await Http.GetFromJsonAsync<IEnumerable<UsersWithRolesDisplay>>("https://userprovider-silicon-camilla.azurewebsites.net/api/GetUsersWithRoles?code=eRBUl6LEZnKxyypSfH0poNdAYF384aBVBxb3z1mOLRCZAzFu0NZGCg%3D%3D");
             if (response != null)
             {
                 users = response;

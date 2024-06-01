@@ -1,23 +1,26 @@
 ﻿@page "/update-course/{courseId}"
 @inject CourseService CourseService
 @inject NavigationManager Navigation
+@attribute [Authorize(Roles = "Admin, SuperAdmin, CIO")]
 
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 
 <h3>Update Course</h3>
-<section class="admincourse">
+<section class="updatecourse">
     <div class="container">
-        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        @if (!String.IsNullOrEmpty(StatusMessage))
         {
-            <p>@statusMessage</p>
+            <div class="alert alert-success" role="alert">
+                @StatusMessage
+            </div>
         }
         @if (course != null && course.Authors != null && course.Prices != null && course.Content != null)
             {
         <EditForm Model="course" class="courseform form" FormName="updatecourse" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <h2>Update course</h2>
+                <h2>Update course</h2>
 
             
                 <div class="mb-3">
@@ -149,7 +152,7 @@
     int i = 0;
 
     [SupplyParameterFromQuery]
-    private string statusMessage { get; set; } = "";
+    private string StatusMessage { get; set; } = "";
     [Parameter] public string courseId { get; set; }
 
     [SupplyParameterFromForm(Name = "course")]
@@ -180,7 +183,7 @@
         var result = await CourseService.RequestUpdateCourseAsync(course);
         if (result != null)
         {
-            statusMessage = "Course updated successfully";
+            StatusMessage = "Course updated successfully";
         }
     }
 

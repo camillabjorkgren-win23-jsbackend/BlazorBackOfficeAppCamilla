@@ -1,54 +1,69 @@
 ﻿@page "/courseadmin"
+
 @attribute [StreamRendering]
 @rendermode InteractiveServer
-
+@attribute [Authorize(Roles = "Admin, SuperAdmin, CIO")]
 @inject CourseService CourseService
 @inject NavigationManager NavigationManager
 
 
-<h3>CourseAdmin</h3>
+
+
 
 <section class="admincourse">
-    <div class="container">
-<a href="create-course" class="btn btn-theme mb-5" aria-hidden="true"><h5>Create new Course</h5></a>
-        @if (!string.IsNullOrWhiteSpace(statusMessage))
-        {
-            <p>@statusMessage</p>
-        }
- @if (courses == null)
-{
-    <div><i class="fa-sharp fa-solid fa-spinner-third fa-spin"></i></div>
-}
-else
-{
-    @foreach (var course in courses)
+    <h3>CourseAdmin</h3>
+    @if (courses == null)
     {
-        var link = $"/update-course/{course.Id}";
-        <div> <img class="course-image" src="@course.ImageUri" /></div>
-
-            <div class="info">
-                <h2 class="course-title">@course.Title</h2>
-                <p class="course-creator">by @course.Author</p>
-                <div class="course-prices">
-                    @if (course.DiscountPrice > 0)
-                    {
-                        <div class="discount-price">$@course.DiscountPrice</div>
-                        <div class="original-price discount">$@course.Price</div>
-                    }
-                    else
-                    {
-                        <div class="original-price">$@course.Price</div>
-                    }
-                </div>
-
-                <div class="course-footer">
-                        <a href="@link"><button class="btn btn-theme">Update</button></a>
-                        <button class="btn btn-red" @onclick="() => DeleteCourse(course.Id)">Delete</button>
-                </div>
-            </div>
-        <hr />
+        <div><i class="fa-sharp fa-solid fa-spinner-third fa-spin"></i></div>
     }
-}
+    <div class="container">
+        <a href="create-course" class="btn btn-theme mb-5" aria-hidden="true"><h5>Create new Course</h5></a>
+        @if (!String.IsNullOrEmpty(StatusMessage))
+        {
+            <div class="alert alert-success" role="alert">
+                @StatusMessage
+            </div>
+        }
+        else if (courses != null)
+        {
+
+            @foreach (var course in courses)
+            {
+                var link = $"/update-course/{course.Id}";
+                <div class="course">
+                    <div class="img"> <img class="course-image" src="@course.ImageUri" /></div>
+
+                    <div class="info">
+
+                        <h5 class="course-title">@course.Title</h5>
+
+                        <p class="course-creator">by @course.Author</p>
+
+                        <div class="course-prices">
+                            @if (course.DiscountPrice > 0)
+                            {
+                                <div class="discount-price">$@course.DiscountPrice</div>
+                                <div class="original-price discount">$@course.Price</div>
+                            }
+                            else
+                            {
+                                <div class="original-price">$@course.Price</div>
+                            }
+                        </div>
+
+                        <div class="course-footer">
+                            <a href="@link" class="btn btn-theme">Update</a>                       
+                            <button class="btn btn-danger" @onclick="() => DeleteCourse(course.Id)">Delete</button>
+                        </div>
+
+                    </div>
+                    <hr />
+                </div>
+
+            }
+
+
+        }
     </div>
 </section>
 
@@ -61,13 +76,12 @@ else
 
 @code {
     [SupplyParameterFromQuery]
-    private string statusMessage { get; set; } = "";
+    private string StatusMessage { get; set; } = "";
 
     private List<CourseAdminCard>? courses;
 
     protected override async Task OnInitializedAsync()
     {
-        // courses = await CourseService.RequestCourseCardAdmin();
         var query = new GraphQLQuery
             {
                 Query = "{getCourses {id imageUri title authors{name} prices {price discount}}}"
@@ -122,7 +136,7 @@ else
 
         var result = await CourseService.RequestDeleteCourseAsync(id);
         if (result)
-        statusMessage = "Course deleted successfully";
-            StateHasChanged();
+            StatusMessage = "Course deleted successfully";
+        StateHasChanged();
     }
 }

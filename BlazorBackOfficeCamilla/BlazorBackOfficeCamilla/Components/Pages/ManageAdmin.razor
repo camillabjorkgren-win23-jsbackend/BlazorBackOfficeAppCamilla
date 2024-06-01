@@ -2,48 +2,53 @@
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 
+@attribute [Authorize(Roles = "SuperAdmin, CIO")]
 
 
-<h3>ManageAdmin</h3>
 
-
-<section class="ManageAdmin">
+<section class="manageadmin">
     <div class="container">
+
+        <h3>ManageAdmin</h3>
         @if (!String.IsNullOrEmpty(StatusMessage))
         {
-            <p>@StatusMessage</p>
+            <div class="alert alert-success" role="alert">
+                @StatusMessage
+            </div>
         }
 
         @if (userAdminForms != null)
         {
             @foreach (var userAdminForm in userAdminForms)
             {
-                <div>
-                    <h4>User: @userAdminForm.FirstName @userAdminForm.LastName</h4>
-                    <EditForm Model="userAdminForm" OnValidSubmit="@(() => UpdateRoles(userAdminForm))" novalidate>
-                        <InputText type="hidden" @bind-Value="userAdminForm.UserId" />
-                        <div class="checkbox-group">
-                            <div class="mb-3">
-                                <label>User</label>
-                                <InputCheckbox @bind-Value="userAdminForm.IsUser" />
-                            </div>
-                            <div class="mb-3">
-                                <label>Admin</label>
-                                <InputCheckbox @bind-Value="userAdminForm.IsAdmin" />
-                            </div>
-                            <div class="mb-3">
-                                <label>CIO</label>
-                                <InputCheckbox @bind-Value="userAdminForm.IsCIO" />
-                            </div>
-                            <div class="mb-3">
-                                <label>SuperAdmin</label>
-                                <InputCheckbox @bind-Value="userAdminForm.IsSuperAdmin" />
-                            </div>
-                        </div>
+                <div class="users">
+                <h5>User: @userAdminForm.FirstName @userAdminForm.LastName</h5>
+                <EditForm Model="userAdminForm" OnValidSubmit="@(() => UpdateRoles(userAdminForm))" novalidate>
+                    <InputText type="hidden" @bind-Value="userAdminForm.UserId" />
+                    <div class="checkbox-group">
 
-                        <button type="submit" class="btn btn-theme">Update</button>
-                    </EditForm>
+                        <div class="mb-3 checkbox">
+                            <label>User</label>
+                            <InputCheckbox @bind-Value="userAdminForm.IsUser" />
+                        </div>
+                        <div class="mb-3 checkbox">
+                            <label>Admin</label>
+                            <InputCheckbox @bind-Value="userAdminForm.IsAdmin" />
+                        </div>
+                        <div class="mb-3 checkbox">
+                            <label>CIO</label>
+                            <InputCheckbox @bind-Value="userAdminForm.IsCIO" />
+                        </div>
+                        <div class="mb-3 checkbox">
+                            <label>SuperAdmin</label>
+                            <InputCheckbox @bind-Value="userAdminForm.IsSuperAdmin" />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-theme">Update roles</button>
+                </EditForm>
                 </div>
+
             }
         }
         else
@@ -55,8 +60,6 @@
 
 
 @code {
-    // private IEnumerable<UsersWithRolesDisplay> users;
-
     private List<UserAdminForm> userAdminForms;
 
     private string StatusMessage { get; set; } = null!;
@@ -65,7 +68,7 @@
     {
         try
         {
-            var response = await Http.GetFromJsonAsync<IEnumerable<UsersWithRolesDisplay>>("http://localhost:7074/api/GetUsersWithRoles");
+            var response = await Http.GetFromJsonAsync<IEnumerable<UsersWithRolesDisplay>>("https://userprovider-silicon-camilla.azurewebsites.net/api/GetUsersWithRoles?code=eRBUl6LEZnKxyypSfH0poNdAYF384aBVBxb3z1mOLRCZAzFu0NZGCg%3D%3D");
             if (response != null)
             {
                 userAdminForms = new List<UserAdminForm>();
@@ -96,7 +99,7 @@
 
     public async Task UpdateRoles(UserAdminForm userAdminForm)
     {
-        var response = await Http.PostAsJsonAsync($"http://localhost:7074/api/UpdateUserRoles", userAdminForm);
+        var response = await Http.PostAsJsonAsync($"https://userprovider-silicon-camilla.azurewebsites.net/api/UpdateUserRoles?code=bF5sEwrgkH14aSzCpOB3L-HG4ddg0Ul5hWbr1ZDueSAhAzFuq4A7tA%3D%3D", userAdminForm);
         if (response.IsSuccessStatusCode)
         {
             StatusMessage = "Roles updated";
@@ -107,9 +110,5 @@
             StatusMessage = "Roles not updated";
         }
     }
-    //Hämta alla users i en lista
-    //Välj i en checkbox vilka roller som ska tilldelas
-    //submit till databasen
-    //Kolla om användaren redan har rollen, om den har det, visa det i en lista
 
 }

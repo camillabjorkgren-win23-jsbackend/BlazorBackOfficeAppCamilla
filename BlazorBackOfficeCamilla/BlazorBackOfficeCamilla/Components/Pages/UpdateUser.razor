@@ -4,72 +4,80 @@
 @using BlazorBackOfficeCamilla.Data
 @layout BlazorBackOfficeCamilla.Components.Layout.MainLayout
 
-<h3>UpdateUser</h3>
+@attribute [Authorize(Roles = "Admin, SuperAdmin, CIO")]
 
-@if (!String.IsNullOrEmpty(StatusMessage))
-{
-    <p>@StatusMessage</p>
-}
+
+
 @if (userForm == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <EditForm Model="userForm" OnValidSubmit="HandleSubmit" FormName="updateuser">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+    <section>
+        <div class="container">
+            <h3>UpdateUser</h3>
+            @if (!String.IsNullOrEmpty(StatusMessage))
+            {
+                <div class="alert alert-success" role="alert">
+                    @StatusMessage
+                </div>
+            }
+            <EditForm Model="userForm" OnValidSubmit="HandleSubmit" FormName="updateuser">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
 
-        <div class="form-floating mb-3">
-            <InputText @bind-Value="userForm.FirstName" class="form-control" />
-            <label for="FirstName" class="form-label">First Name</label>
-            <ValidationMessage For="() => userForm.FirstName" class="text-danger" />
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="userForm.FirstName" class="form-control" />
+                    <label for="FirstName" class="form-label">First Name</label>
+                    <ValidationMessage For="() => userForm.FirstName" class="text-danger" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="userForm.LastName" class="form-control" />
+                    <label for="LastName" class="form-label">Last Name</label>
+                    <ValidationMessage For="() => userForm.LastName" class="text-danger" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="userForm.PreferredEmail" class="form-control" />
+                    <label for="PreferredEmail" class="form-label">Preferred Email</label>
+                    <ValidationMessage For="() => userForm.PreferredEmail" class="text-danger" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="userForm.AddressType" class="form-control" />
+                    <label for="AddressType" class="form-label
+                ">Address Type</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="userForm.AddressLine_1" class="form-control" />
+                    <label for="AddressLine_1" class="form-label
+                ">Address Line 1</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="userForm.AddressLine_2" class="form-control" />
+                    <label for="AddressLine_2" class="form-label
+                ">Address Line 2</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="userForm.PostalCode" class="form-control" />
+                    <label for="PostalCode" class="form-label
+                ">Postal Code</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="userForm.City" class="form-control" />
+                    <label for="City" class="form-label
+                ">City</label>
+                </div>
+                <button type="submit">Update user</button>
+            </EditForm>
         </div>
-
-        <div class="form-floating mb-3">
-            <InputText @bind-Value="userForm.LastName" class="form-control" />
-            <label for="LastName" class="form-label">Last Name</label>
-            <ValidationMessage For="() => userForm.LastName" class="text-danger" />
-        </div>
-
-        <div class="form-floating mb-3">
-            <InputText @bind-Value="userForm.PreferredEmail" class="form-control" />
-            <label for="PreferredEmail" class="form-label">Preferred Email</label>
-            <ValidationMessage For="() => userForm.PreferredEmail" class="text-danger" />
-        </div>
-
-        <div class="form-floating mb-3">
-            <InputText @bind-Value="userForm.AddressType" class="form-control" />
-            <label for="AddressType" class="form-label
-            ">Address Type</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <InputText @bind-Value="userForm.AddressLine_1" class="form-control" />
-            <label for="AddressLine_1" class="form-label
-            ">Address Line 1</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <InputText @bind-Value="userForm.AddressLine_2" class="form-control" />
-            <label for="AddressLine_2" class="form-label
-            ">Address Line 2</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <InputText @bind-Value="userForm.PostalCode" class="form-control" />
-            <label for="PostalCode" class="form-label
-            ">Postal Code</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <InputText @bind-Value="userForm.City" class="form-control" />
-            <label for="City" class="form-label
-            ">City</label>
-        </div>
-        <button type="submit">Update user</button>
-    </EditForm>
-
+    </section>
 }
 
 @code {
@@ -87,25 +95,25 @@ else
 
         if (id != null)
         {
-            var user = await Http.GetFromJsonAsync<ApplicationUser>($"http://localhost:7074/api/GetUserById/?id={id}");
+            var user = await Http.GetFromJsonAsync<ApplicationUser>($"https://userprovider-silicon-camilla.azurewebsites.net/api/GetUserById?code=MoXVu2Ehy_6uWaNQ9GbUECebhzhGT-xPM-QfBk6a2_XKAzFuqbmPGw%3D%3D&id={id}");
             userForm = new UserForm
-            {
-                Id = user.Id,
-                PreferredEmail = user.PreferredEmail,
-                AddressType = user.UserAddress.AddressType,
-                AddressLine_1 = user.UserAddress.AddressLine_1,
-                AddressLine_2 = user.UserAddress.AddressLine_2,
-                PostalCode = user.UserAddress.PostalCode,
-                City = user.UserAddress.City,
-                FirstName = user.UserProfile.FirstName,
-                LastName = user.UserProfile.LastName
-            };
+                {
+                    Id = user.Id,
+                    PreferredEmail = user.PreferredEmail,
+                    AddressType = user.UserAddress.AddressType,
+                    AddressLine_1 = user.UserAddress.AddressLine_1,
+                    AddressLine_2 = user.UserAddress.AddressLine_2,
+                    PostalCode = user.UserAddress.PostalCode,
+                    City = user.UserAddress.City,
+                    FirstName = user.UserProfile.FirstName,
+                    LastName = user.UserProfile.LastName
+                };
         }
     }
 
     private async Task HandleSubmit()
     {
-        var response = await Http.PostAsJsonAsync("http://localhost:7074/api/UpdateUser", userForm);
+        var response = await Http.PostAsJsonAsync("https://userprovider-silicon-camilla.azurewebsites.net/api/UpdateUser?code=ARR_KO04XJ2KaSOGIQfF-DAsduj_E2ntcmsfjxc5FlGhAzFuD24ZjQ%3D%3D", userForm);
         if (response.IsSuccessStatusCode)
         {
             StatusMessage = "User updated successfully";

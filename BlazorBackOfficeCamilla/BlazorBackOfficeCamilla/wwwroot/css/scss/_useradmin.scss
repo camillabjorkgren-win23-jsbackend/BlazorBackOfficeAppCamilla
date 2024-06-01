@@ -1,0 +1,22 @@
+.useradmin {
+    background-color: var(--color-gray-100);
+
+    
+    th, td {
+        background-color: var(--color-gray-100);
+    }
+
+    .actions {
+        text-align: center;
+
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;    
+        justify-content: end;
+
+
+    }
+}

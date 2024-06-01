@@ -1,8 +1,7 @@
 ﻿@using BlazorBackOfficeCamilla.Data
 @inherits LayoutComponentBase
-
 <div class="page">
-    <div class="sidebar">
+    <div class="sidebar">        
         <NavMenu />
     </div>
 
@@ -10,16 +9,9 @@
         <div class="wrapper">
             @Body
             <BlazorBackOfficeCamilla.Components.Pages._Footer />
-        </div>
+            </div>
     </CascadingValue>
-
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
 </div>
-
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>

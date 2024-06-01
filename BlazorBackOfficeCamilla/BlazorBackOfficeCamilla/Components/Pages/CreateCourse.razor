@@ -1,17 +1,20 @@
 ﻿@page "/create-course"
 
-
+@attribute [Authorize(Roles = "Admin, SuperAdmin, CIO")]
 @inject CourseService CourseService
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 
-<h3>Create Course</h3>
+
 
 <section class="admincourse">
     <div class="container">
-        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        <h3>Create Course</h3>
+        @if (!String.IsNullOrEmpty(StatusMessage))
         {
-            <p>@statusMessage</p>
+            <div class="alert alert-success" role="alert">
+                @StatusMessage
+            </div>
         }
 
         <EditForm Model="course" FormName="createcourse" OnValidSubmit="HandleValidSubmit">
@@ -83,17 +86,17 @@
 
             <div class="mb-3">
                 <label class="form-label">Authors</label>
-                    @foreach (var author in course.Authors)
-                    {
-                        <div class="mb-3">
-                            <label class="form-label">Name</label>
-                            <InputText @bind-Value="author.Name" class="form-control" />
-                            <label class="form-label">Author Image</label>
-                            <InputText @bind-Value="author.AuthorImage" class="form-control" />
-                            <button type="button" class="btn-gray btn mt-2" @onclick="() => RemoveAuthor(author)">Remove</button>
-                        </div>
-                    }
-                
+                @foreach (var author in course.Authors)
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <InputText @bind-Value="author.Name" class="form-control" />
+                        <label class="form-label">Author Image</label>
+                        <InputText @bind-Value="author.AuthorImage" class="form-control" />
+                        <button type="button" class="btn-gray btn mt-2" @onclick="() => RemoveAuthor(author)">Remove</button>
+                    </div>
+                }
+
                 <button class="btn-gray btn" type="button" @onclick="AddAuthor">Add Author</button>
             </div>
 
@@ -118,17 +121,17 @@
                     <InputText @bind-Value="includesText" class="form-control" />
                     <label class="form-label">Program Details</label>
 
-                        @foreach (var detail in course.Content.ProgramDetails)
-                        {
-                            <div class="mb-3">
-                                <label class="form-label">Title</label>
-                                <InputText @bind-Value="detail.Title" class="form-control" />
-                                <label class="form-label">Description</label>
-                                <InputTextArea @bind-Value="detail.Description" class="form-control" />
-                                <button class="btn-gray btn mt-2" type="button" @onclick="() => RemoveProgramDetail(detail)">Remove</button>
-                            </div>
-                        }
-                    
+                    @foreach (var detail in course.Content.ProgramDetails)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <InputText @bind-Value="detail.Title" class="form-control" />
+                            <label class="form-label">Description</label>
+                            <InputTextArea @bind-Value="detail.Description" class="form-control" />
+                            <button class="btn-gray btn mt-2" type="button" @onclick="() => RemoveProgramDetail(detail)">Remove</button>
+                        </div>
+                    }
+
 
                     <button class="btn-gray btn" type="button" @onclick="AddProgramDetail">Add Program Detail</button>
                 </div>
@@ -141,7 +144,7 @@
 
 @code {
     [SupplyParameterFromQuery]
-    private string statusMessage { get; set; } = "";
+    private string StatusMessage { get; set; } = "";
 
     private Course course = new Course();
 
@@ -157,11 +160,18 @@
         course.Categories = categories?.Split(',').Select(c => c.Trim()).ToArray();
         course.Content.Includes = includesText?.Split(',').Select(i => i.Trim()).ToArray();
 
-        var result = await CourseService.RequestCreateCourseAsync(course);
-        if (result != null)
+        if (course.Authors.Count == 0 || course.Prices.Price == null || course.Content.Description == null || course.Title == null)
         {
-            statusMessage = "Course created successfully";
-            ResetCourse();
+            StatusMessage = "You need to provide Auhtor, Price, Title and Content description, please try again";
+        }
+        else
+        {
+            var result = await CourseService.RequestCreateCourseAsync(course);
+            if (result != null)
+            {
+                StatusMessage = "Course created successfully";
+                ResetCourse();
+            }
         }
     }
 

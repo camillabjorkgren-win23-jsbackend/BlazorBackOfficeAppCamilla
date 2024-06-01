@@ -248,13 +248,10 @@ public class CourseService(GraphQLHttpClient client)
         };
 
         var response = await _client.SendMutationAsync<DeleteCourseResponse>(request);
-        if (response.Errors != null && response.Errors.Any())
-        {
-            // Hantera eventuella fel
-            return false;
-        }
-
         return response.Data.DeleteCourse;
+
+
+
     }
 
     private class CourseResponse
