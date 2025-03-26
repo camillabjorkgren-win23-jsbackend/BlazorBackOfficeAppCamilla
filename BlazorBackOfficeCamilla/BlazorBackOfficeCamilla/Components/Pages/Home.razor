@@ -100,7 +100,7 @@
 
         var user = await SignInManager.UserManager.FindByEmailAsync(Input.Email);
         bool userIsAdmin = false;
-        var userRoles = await Http.GetFromJsonAsync<IEnumerable<string>>($"https://userprovider-silicon-camilla.azurewebsites.net/api/GetUserRolesByUserId?code=Zsj31kVdKpTlz-OSo0AxwmUgcsu9-9gGHbKw7eyTMWRwAzFu6Std8Q%3D%3D&userId={user.Id}");
+        var userRoles = await Http.GetFromJsonAsync<IEnumerable<string>>($"{Environment.GetEnvironmentVariable("UserProvider_URL")}{user.Id}");
         if (userRoles.Any(role => role == "Admin" || role == "CIO" || role == "SuperAdmin"))
         {
             userIsAdmin = true;

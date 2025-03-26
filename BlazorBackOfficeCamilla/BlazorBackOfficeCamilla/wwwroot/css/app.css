@@ -16,6 +16,7 @@ html, body {
 
 .wrapper {
   height: 100vh;
+  width: 100%;
   display: grid;
   grid-template-rows: 1fr auto;
 }
@@ -599,8 +600,7 @@ header {
 }
 header .container {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 15px;
   width: 100%;
   justify-content: flex-start;
@@ -656,6 +656,11 @@ footer .container {
 .login .container {
   margin: auto;
   padding: 15px;
+}
+.login .container .checkbox .form-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .admincourse {
