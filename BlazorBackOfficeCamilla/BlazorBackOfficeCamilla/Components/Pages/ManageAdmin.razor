@@ -68,7 +68,7 @@
     {
         try
         {
-            var response = await Http.GetFromJsonAsync<IEnumerable<UsersWithRolesDisplay>>("https://userprovider-silicon-camilla.azurewebsites.net/api/GetUsersWithRoles?code=eRBUl6LEZnKxyypSfH0poNdAYF384aBVBxb3z1mOLRCZAzFu0NZGCg%3D%3D");
+            var response = await Http.GetFromJsonAsync<IEnumerable<UsersWithRolesDisplay>>(Environment.GetEnvironmentVariable("UserProvider_GetUserRoles"));
             if (response != null)
             {
                 userAdminForms = new List<UserAdminForm>();
@@ -99,7 +99,7 @@
 
     public async Task UpdateRoles(UserAdminForm userAdminForm)
     {
-        var response = await Http.PostAsJsonAsync($"https://userprovider-silicon-camilla.azurewebsites.net/api/UpdateUserRoles?code=bF5sEwrgkH14aSzCpOB3L-HG4ddg0Ul5hWbr1ZDueSAhAzFuq4A7tA%3D%3D", userAdminForm);
+        var response = await Http.PostAsJsonAsync(Environment.GetEnvironmentVariable("UserProvider_UpdateUserRoles"), userAdminForm);
         if (response.IsSuccessStatusCode)
         {
             StatusMessage = "Roles updated";

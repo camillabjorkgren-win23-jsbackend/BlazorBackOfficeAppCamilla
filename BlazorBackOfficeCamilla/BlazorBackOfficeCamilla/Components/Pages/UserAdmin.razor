@@ -83,7 +83,7 @@
 
     public async Task Delete(UserId userId)
     {
-        var response = await Http.PostAsJsonAsync($"https://userprovider-silicon-camilla.azurewebsites.net/api/DeleteUser?code=2s0hhki7OP3ovSE80n4G2ZH8yoY91JhBILHjACWcbaAfAzFu-R6zPw%3D%3D", userId);
+        var response = await Http.PostAsJsonAsync(Environment.GetEnvironmentVariable("UserProvider_DeleteUser"), userId);
         if (response.IsSuccessStatusCode)
         {
             StatusMessage = "User deleted";
@@ -99,7 +99,7 @@
     {
         try
         {
-            var response = await Http.GetFromJsonAsync<IEnumerable<UsersWithRolesDisplay>>("https://userprovider-silicon-camilla.azurewebsites.net/api/GetUsersWithRoles?code=eRBUl6LEZnKxyypSfH0poNdAYF384aBVBxb3z1mOLRCZAzFu0NZGCg%3D%3D");
+            var response = await Http.GetFromJsonAsync<IEnumerable<UsersWithRolesDisplay>>(Environment.GetEnvironmentVariable("UserProvider_GetUsersWithRoles"));
             if (response != null)
             {
                 users = response;

@@ -84,7 +84,7 @@
     {
         try
         {
-            var result = await Http.PostAsJsonAsync("https://newsletterprovider-silicon-camilla.azurewebsites.net/api/UpdateSubscriber?code=dOTwTpyNqlO0o5TXwiFPyr45QoQ7SQuAf17ySe-uzVthAzFunyCOQg%3D%3D", SubscribeForm);
+            var result = await Http.PostAsJsonAsync(Environment.GetEnvironmentVariable("NewsletterProvider_UpdateSubscriber"), SubscribeForm);
             if (result.IsSuccessStatusCode)
                 StatusMessage = "Subscriber was updated!";
             else
@@ -110,7 +110,7 @@
     private async Task GetSubscriber(string email)
     {
         var subscriberRequest = new { Email = email };
-        var response = await Http.PostAsJsonAsync("https://newsletterprovider-silicon-camilla.azurewebsites.net/api/GetOneSubscriber?code=qMVaRYt6m4sru1zUHg628GkSapuY8A2Bh0wYS0Yry0qSAzFu1bSBMw%3D%3D", subscriberRequest);
+        var response = await Http.PostAsJsonAsync(Environment.GetEnvironmentVariable("NewsletterProvider_GetOneSubscriber"), subscriberRequest);
         if (response.IsSuccessStatusCode)
         {
             var subscriber = await response.Content.ReadFromJsonAsync<SubscribeFormModel>();

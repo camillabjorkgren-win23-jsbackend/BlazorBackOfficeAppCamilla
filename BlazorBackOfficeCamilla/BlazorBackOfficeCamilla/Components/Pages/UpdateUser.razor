@@ -95,7 +95,7 @@ else
 
         if (id != null)
         {
-            var user = await Http.GetFromJsonAsync<ApplicationUser>($"https://userprovider-silicon-camilla.azurewebsites.net/api/GetUserById?code=MoXVu2Ehy_6uWaNQ9GbUECebhzhGT-xPM-QfBk6a2_XKAzFuqbmPGw%3D%3D&id={id}");
+            var user = await Http.GetFromJsonAsync<ApplicationUser>($"{Environment.GetEnvironmentVariable("UserProvider_GetUserById")}{id}");
             userForm = new UserForm
                 {
                     Id = user.Id,
@@ -113,7 +113,7 @@ else
 
     private async Task HandleSubmit()
     {
-        var response = await Http.PostAsJsonAsync("https://userprovider-silicon-camilla.azurewebsites.net/api/UpdateUser?code=ARR_KO04XJ2KaSOGIQfF-DAsduj_E2ntcmsfjxc5FlGhAzFuD24ZjQ%3D%3D", userForm);
+        var response = await Http.PostAsJsonAsync(Environment.GetEnvironmentVariable("UserProvider_UpdateUser"), userForm);
         if (response.IsSuccessStatusCode)
         {
             StatusMessage = "User updated successfully";

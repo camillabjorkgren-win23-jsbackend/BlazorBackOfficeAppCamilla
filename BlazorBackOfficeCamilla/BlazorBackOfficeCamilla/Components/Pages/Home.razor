@@ -23,7 +23,7 @@
             <div class="alert alert-danger" role="alert">
                 @errorMessage
             </div>
-         
+
         }
         @if (!string.IsNullOrEmpty(message))
         {
@@ -59,10 +59,10 @@
             </div>
             <div>
                 <button type="submit" class="btn btn-theme">Log in</button>
-            </div>        
+            </div>
         </EditForm>
-   
-       
+
+
     </div>
 </section>
 
@@ -89,55 +89,53 @@
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
         }
-
-       
-
     }
 
 
     public async Task LoginUser()
     {
-
         var user = await SignInManager.UserManager.FindByEmailAsync(Input.Email);
         bool userIsAdmin = false;
-        var userRoles = await Http.GetFromJsonAsync<IEnumerable<string>>($"{Environment.GetEnvironmentVariable("UserProvider_URL")}{user.Id}");
-        if (userRoles.Any(role => role == "Admin" || role == "CIO" || role == "SuperAdmin"))
+        if (user != null && !String.IsNullOrEmpty(user.Id))
         {
-            userIsAdmin = true;
-        }
-        if (userIsAdmin)
-        {
-            try
+            var userProviderUrl = Environment.GetEnvironmentVariable("UserProvider_URL");
+            var userRoles = await Http.GetFromJsonAsync<IEnumerable<string>>($"{userProviderUrl}{user.Id}");
+            if (userRoles != null && userRoles.Any(role => role == "Admin" || role == "CIO" || role == "SuperAdmin"))
             {
-                var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                userIsAdmin = true;
+            }
+            if (userIsAdmin)
+            {
+                try
                 {
-                    isLoggedIn = true;
-                   
-                    message = "User logged in successfully";
-                    Input = new InputModel();
-                   
-                    StateHasChanged();
-                    
-                    //bugg here by microsoft both RedirectManager and NavigateTo: https://stackoverflow.com/questions/58076758/navigationerror-on-navigateto
-                    RedirectManager.RedirectTo("/courseadmin");
+                    var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        isLoggedIn = true;
+
+                        message = "User logged in successfully";
+                        Input = new InputModel();
+
+                        StateHasChanged();
+                    }
+                    else
+                    {
+                        errorMessage = "Error: Invalid login attempt";
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    errorMessage = "Error: Invalid login attempt";
+                    errorMessage = "Error:something went wrong because of bug of Microsoft. User logged in successfully.";
+                    await InvokeAsync(StateHasChanged);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                errorMessage = "Error:something went wrong because of bug of Microsoft. User logged in successfully.";
-                await InvokeAsync(StateHasChanged);
+                errorMessage = "Error: You are not authorized to log in.";
             }
-    }
-        else
-        {
-            errorMessage = "Error: You are not authorized to log in.";
         }
     }
+
 
     private sealed class InputModel
     {
